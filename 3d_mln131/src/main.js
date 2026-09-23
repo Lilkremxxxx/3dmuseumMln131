@@ -31,6 +31,15 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize);
 
+// ── ĐẢM BẢO FONT TIẾNG VIỆT NẠP XONG 100% TRƯỚC KHI VẼ TEXTURE CANVAS ──
+if (document.fonts) {
+  try {
+    await document.fonts.ready;
+  } catch (err) {
+    console.warn('Font loading check:', err);
+  }
+}
+
 // ── DỰNG KIẾN TRÚC BẢO TÀNG & 10 HIỆN VẬT ────────────────────
 const { hallsGroup, sparklesAnimator } = buildMuseumHalls(scene);
 const { exhibitObjects, animators: exhibitAnimators } = createExhibitObjects(scene);
@@ -47,6 +56,91 @@ const btnNextEl = document.getElementById('btnNextExhibit');
 const btnInspectEl = document.getElementById('btnInspect');
 const btnStepBackEl = document.getElementById('btnStepBack');
 const btnAutoTourEl = document.getElementById('btnAutoTour');
+
+// ── THEO DÕI TIẾN TRÌNH KHÁM PHÁ 10 HIỆN VẬT & POPUP CHÚC MỪNG ──
+const visitedExhibits = new Set();
+let hasShownCompletionModal = false;
+
+const progressBadgeEl = document.getElementById('tourProgressBadge');
+const progressCountEl = document.getElementById('progressCount');
+const completionModalEl = document.getElementById('completionModal');
+const btnCloseCompletionEl = document.getElementById('completionCloseBtn');
+const btnDismissCompletionEl = document.getElementById('btnDismissCompletion');
+const btnRestartTourEl = document.getElementById('btnRestartTour');
+
+function markExhibitVisited(index) {
+  visitedExhibits.add(index);
+  if (progressCountEl) {
+    progressCountEl.textContent = visitedExhibits.size;
+  }
+  if (progressBadgeEl && visitedExhibits.size === 10) {
+    progressBadgeEl.classList.add('completed');
+  }
+
+  // Khi hoàn thành xem đủ 10 hiện vật -> kích hoạt popup chúc mừng
+  if (visitedExhibits.size === 10 && !hasShownCompletionModal) {
+    hasShownCompletionModal = true;
+    setTimeout(() => {
+      showCompletionModal();
+    }, 1100);
+  }
+}
+
+function showCompletionModal() {
+  if (!completionModalEl) return;
+  modalManager.hide(); // Tạm ẩn modal hiện vật để làm nổi bật modal chúc mừng
+  completionModalEl.classList.add('active');
+  playCelebrationSound();
+}
+
+function hideCompletionModal() {
+  if (completionModalEl) {
+    completionModalEl.classList.remove('active');
+  }
+}
+
+// Âm thanh chúc mừng hân hoan bằng Web Audio API (nhẹ nhàng, trang nghiêm)
+function playCelebrationSound() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // Hợp âm C5, E5, G5, C6 khải hoàn
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.16);
+      gain.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.16);
+      gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + i * 0.16 + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.16 + 0.85);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i * 0.16);
+      osc.stop(ctx.currentTime + i * 0.16 + 0.9);
+    });
+  } catch (e) {
+    // Trình duyệt có thể chặn autoplay nếu chưa tương tác
+  }
+}
+
+if (btnCloseCompletionEl) {
+  btnCloseCompletionEl.addEventListener('click', hideCompletionModal);
+}
+if (btnDismissCompletionEl) {
+  btnDismissCompletionEl.addEventListener('click', hideCompletionModal);
+}
+if (btnRestartTourEl) {
+  btnRestartTourEl.addEventListener('click', () => {
+    hideCompletionModal();
+    goToExhibit(0);
+  });
+}
+if (progressBadgeEl) {
+  progressBadgeEl.addEventListener('click', () => {
+    showCompletionModal();
+  });
+}
 
 let currentActiveIndex = 0;
 let isTourRunning = false;
@@ -100,10 +194,15 @@ const cameraController = new CameraController(
       currentExhibitBadgeEl.textContent = `Hiện vật ${exhibit.romanNumeral}/X: ${exhibit.title}`;
       currentExhibitBadgeEl.style.display = 'block';
     }
+    // Ghi nhận hiện vật đã khám phá
+    markExhibitVisited(index);
     // Tự động mở modal chi tiết khi camera bước đến gần
     modalManager.show(exhibit);
   }
 );
+
+// Ghi nhận hiện vật đầu tiên ngay khi tải trang
+markExhibitVisited(0);
 
 // ── ĐIỀU HƯỚNG HIỆN VẬT ───────────────────────────────────────
 function navigateExhibit(direction) {

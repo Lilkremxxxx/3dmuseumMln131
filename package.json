@@ -1,11 +1,11 @@
 {
-  "name": "trien-lam-2d-dan-toc-ton-giao-mln131",
+  "name": "virtual-museum-3d-mln131",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cd 2d_mln131 && npm run dev",
-    "build": "cd 2d_mln131 && npm install && npm run build && node -e \"const fs=require('fs'); fs.cpSync('dist', '../dist', {recursive: true});\"",
-    "preview": "cd 2d_mln131 && npm run preview"
+    "dev": "cd 3d_mln131 && npm run dev",
+    "build": "cd 3d_mln131 && npm install && npm run build",
+    "preview": "cd 3d_mln131 && npm run preview"
   }
 }

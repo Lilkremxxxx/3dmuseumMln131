@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd 2d_mln131 && npm install && npm run build",
-  "outputDirectory": "2d_mln131/dist",
+  "buildCommand": "cd 3d_mln131 && npm install && npm run build",
+  "outputDirectory": "3d_mln131/dist",
   "framework": "vite"
 }
