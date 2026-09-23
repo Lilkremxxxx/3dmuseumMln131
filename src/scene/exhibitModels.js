@@ -1,11 +1,9 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { EXHIBITS_DATA } from '../data/exhibits-data.js';
 
 export function createExhibitObjects(scene) {
   const exhibitObjects = [];
   const animators = [];
-  const gltfLoader = new GLTFLoader();
   const textureLoader = new THREE.TextureLoader();
 
   // Vật liệu bục trưng bày gỗ gụ & đá sẫm cao cấp phong cách bảo tàng
@@ -119,35 +117,12 @@ export function createExhibitObjects(scene) {
 
     group.add(pedGroup);
 
-    // ── 6. KHUNG TRANH NGHỆ THUẬT 3D HOẶC 3D GLTF MODEL ──────────
+    // ── 6. KHUNG TRANH NGHỆ THUẬT 3D VỚI ẢNH TƯ LIỆU THẬT ────────
     const modelContainer = new THREE.Group();
     modelContainer.position.y = 0.18 + pedHeight + 0.03;
-    group.add(modelContainer);
-
-    // Tải mô hình 3D .glb nếu có
-    let hasLoadedGltf = false;
-    if (data.modelFile) {
-      gltfLoader.load(
-        data.modelFile,
-        (gltf) => {
-          hasLoadedGltf = true;
-          while (modelContainer.children.length > 0) {
-            modelContainer.remove(modelContainer.children[0]);
-          }
-          const loadedModel = gltf.scene;
-          loadedModel.scale.set(1, 1, 1);
-          modelContainer.add(loadedModel);
-        },
-        undefined,
-        () => {
-          // File GLB chưa có, hiển thị khung tranh nghệ thuật tư liệu thật
-        }
-      );
-    }
-
-    // Mặc định: Dựng khung tranh nghệ thuật 3D mạ vàng với ảnh tư liệu thật
     const artFrame = buildArtDisplayFrame(data, textureLoader, goldTrimMat, animators);
     modelContainer.add(artFrame);
+    group.add(modelContainer);
 
     // Collider vô hình bắt click chuột tương tác
     const collider = new THREE.Mesh(
