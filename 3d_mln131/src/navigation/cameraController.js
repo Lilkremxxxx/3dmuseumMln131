@@ -11,12 +11,18 @@ export class CameraController {
     // Trạng thái góc nhìn
     this.yaw = Math.PI; // Hướng nhìn ban đầu dọc theo hành lang
     this.pitch = 0;
-    this.keys = {};
-    this.moveVelocity = new THREE.Vector3();
     this.isDragging = false;
     this.lastPointerX = 0;
     this.lastPointerY = 0;
     this.dragDistance = 0;
+
+    // Hệ thống Zoom quang học bằng con lăn chuột (Mouse Wheel Zoom) để ngắm chữ / chi tiết từ xa
+    this.defaultFov = 65;
+    this.targetFov = 65;
+    this.minFov = 16;  // Cực đại phóng to ~4x (FOV hẹp) để đọc rõ từng chữ trên bia đá, tranh ảnh, tường
+    this.maxFov = 75;  // Góc nhìn rộng toàn cảnh sảnh
+    this.camera.fov = this.defaultFov;
+    this.camera.updateProjectionMatrix();
 
     // Chế độ camera
     this.mode = 'FREE'; // 'FREE' | 'APPROACHING' | 'INSPECTING'
@@ -35,7 +41,7 @@ export class CameraController {
       onComplete: null,
     };
 
-    // Tham số giới hạn không gian
+    // Giới hạn tầm mắt
     this.bounds = {
       minX: -8.0,
       maxX: 8.0,
@@ -48,17 +54,51 @@ export class CameraController {
   }
 
   initEventListeners() {
+    // 1. Zoom bằng con lăn chuột (Mouse Wheel Zoom)
+    this.domElement.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      // Cuộn lên (deltaY < 0): Phóng to (Zoom In - giảm FOV)
+      // Cuộn xuống (deltaY > 0): Thu nhỏ (Zoom Out - tăng FOV)
+      const zoomSensitivity = 0.045;
+      const delta = e.deltaY * zoomSensitivity;
+      this.targetFov = Math.max(this.minFov, Math.min(this.maxFov, this.targetFov + delta));
+    }, { passive: false });
+
+    // Hỗ trợ pinch-to-zoom trên màn hình cảm ứng
+    let initialPinchDist = null;
+    this.domElement.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        initialPinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    }, { passive: true });
+
+    this.domElement.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && initialPinchDist) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const diff = initialPinchDist - dist;
+        this.targetFov = Math.max(this.minFov, Math.min(this.maxFov, this.targetFov + diff * 0.08));
+        initialPinchDist = dist;
+      }
+    }, { passive: true });
+
+    this.domElement.addEventListener('touchend', () => {
+      initialPinchDist = null;
+    }, { passive: true });
+
+    // Phím tắt thoát chế độ 360
     window.addEventListener('keydown', (e) => {
-      this.keys[e.key.toLowerCase()] = true;
-      if (this.mode === 'INSPECTING' && (e.key === 'Escape' || e.key === 'w' || e.key === 's')) {
+      if (this.mode === 'INSPECTING' && (e.key === 'Escape' || e.key === 'Backspace')) {
         this.exitInspectMode();
       }
     });
 
-    window.addEventListener('keyup', (e) => {
-      this.keys[e.key.toLowerCase()] = false;
-    });
-
+    // 2. Kéo chuột xoay góc nhìn
     this.domElement.addEventListener('pointerdown', (e) => {
       this.isDragging = true;
       this.lastPointerX = e.clientX;
@@ -94,9 +134,9 @@ export class CameraController {
         return;
       }
 
-      // Xoay góc nhìn thông thường
+      // Xoay góc nhìn trong không gian tự do
       this.yaw += dx * 0.003;
-      this.pitch = Math.max(-0.7, Math.min(0.7, this.pitch - dy * 0.003));
+      this.pitch = Math.max(-0.75, Math.min(0.75, this.pitch - dy * 0.003));
     });
   }
 
@@ -108,6 +148,9 @@ export class CameraController {
     const exhibit = EXHIBITS_DATA[index];
     this.currentExhibitIndex = index;
     this.mode = 'APPROACHING';
+
+    // Tự động đưa FOV về tiêu chuẩn 65 độ khi chuyển hiện vật
+    this.targetFov = this.defaultFov;
 
     const targetPos = new THREE.Vector3(
       exhibit.cameraWaypoint.x,
@@ -127,7 +170,7 @@ export class CameraController {
 
     this.startTransition(targetPos, startLook, targetLook, 1200, () => {
       this.mode = 'FREE';
-      // Tính lại yaw và pitch theo hướng nhìn mới
+      // Căn chỉnh yaw và pitch theo góc nhìn chuẩn về hiện vật
       const dir = targetLook.clone().sub(this.camera.position).normalize();
       this.yaw = Math.atan2(-dir.x, -dir.z);
       this.pitch = Math.asin(dir.y);
@@ -167,6 +210,7 @@ export class CameraController {
    */
   stepBackOverview() {
     this.mode = 'APPROACHING';
+    this.targetFov = this.defaultFov;
     const targetZ = this.camera.position.z - 3.5;
     const targetPos = new THREE.Vector3(0, 1.85, Math.max(this.bounds.minZ, targetZ));
     const targetLook = new THREE.Vector3(0, 1.5, targetPos.z + 8);
@@ -191,6 +235,12 @@ export class CameraController {
   }
 
   update(dt) {
+    // Cập nhật zoom mượt mà (Smooth FOV Lerp)
+    if (Math.abs(this.camera.fov - this.targetFov) > 0.01) {
+      this.camera.fov = THREE.MathUtils.lerp(this.camera.fov, this.targetFov, 0.16);
+      this.camera.updateProjectionMatrix();
+    }
+
     // 1. Cập nhật chuyển động chuyển tiếp nếu đang di chuyển tự động (Approaching)
     if (this.transition.active) {
       const now = performance.now();
@@ -219,38 +269,7 @@ export class CameraController {
       return;
     }
 
-    // 2. Chế độ tự do (Free Roam) với W/A/S/D
-    const fwd = new THREE.Vector3(-Math.sin(this.yaw), 0, -Math.cos(this.yaw));
-    const right = new THREE.Vector3(Math.cos(this.yaw), 0, -Math.sin(this.yaw));
-
-    const moveZ = (this.keys['w'] || this.keys['arrowup'] ? 1 : 0) - (this.keys['s'] || this.keys['arrowdown'] ? 1 : 0);
-    const moveX = (this.keys['d'] ? 1 : 0) - (this.keys['a'] ? 1 : 0);
-
-    const isSprint = this.keys['shift'];
-    const currentMaxSpeed = isSprint ? 9.5 : 6.8;
-    const accel = isSprint ? 40.0 : 28.0;
-    const friction = Math.exp(-6.5 * dt);
-
-    if (moveZ !== 0) {
-      this.moveVelocity.addScaledVector(fwd, moveZ * accel * dt);
-    }
-    if (moveX !== 0) {
-      this.moveVelocity.addScaledVector(right, moveX * accel * dt);
-    }
-
-    if (this.moveVelocity.length() > currentMaxSpeed) {
-      this.moveVelocity.normalize().multiplyScalar(currentMaxSpeed);
-    }
-
-    this.camera.position.addScaledVector(this.moveVelocity, dt);
-    this.moveVelocity.multiplyScalar(friction);
-
-    // Ràng buộc giới hạn trong bảo tàng
-    this.camera.position.x = Math.max(this.bounds.minX, Math.min(this.bounds.maxX, this.camera.position.x));
-    this.camera.position.y = this.bounds.eyeHeight;
-    this.camera.position.z = Math.max(this.bounds.minZ, Math.min(this.bounds.maxZ, this.camera.position.z));
-
-    // Cập nhật hướng nhìn
+    // 2. Cập nhật hướng nhìn camera từ yaw và pitch (đã bỏ di chuyển a/w/s/d)
     const euler = new THREE.Euler(this.pitch, this.yaw, 0, 'YXZ');
     this.camera.quaternion.setFromEuler(euler);
 
