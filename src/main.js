@@ -14,12 +14,12 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1; // Cân bằng độ tương phản, ấm cúng và không chói
+renderer.toneMappingExposure = 1.42; // Tăng ~30% độ sáng không gian bảo tàng
 
 const scene = new THREE.Scene();
 // Nền sảnh bảo tàng màu nâu than ấm sang trọng phong cách triển lãm
-scene.background = new THREE.Color(0x0c0806);
-scene.fog = new THREE.Fog(0x0c0806, 22, 95);
+scene.background = new THREE.Color(0x130e0a);
+scene.fog = new THREE.Fog(0x130e0a, 26, 110);
 
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 150);
 camera.position.set(0, 1.65, -4);
@@ -68,7 +68,7 @@ const modalManager = new ModalManager(
 );
 
 // ── ĐÈN HIGHLIGHT TẬP TRUNG HIỆN VẬT ĐANG CHỌN (WARM GOLDEN SPOTLIGHT) ──
-const activeHighlightSpot = new THREE.SpotLight(0xffdf99, 5.0, 30, Math.PI / 4.0, 0.35, 1.2);
+const activeHighlightSpot = new THREE.SpotLight(0xffdf99, 6.5, 32, Math.PI / 4.0, 0.35, 1.2);
 activeHighlightSpot.position.set(0, 7.2, 4);
 activeHighlightSpot.castShadow = true;
 scene.add(activeHighlightSpot);
@@ -244,7 +244,7 @@ function animate() {
   // Di chuyển mượt mà chùm sáng spotlight nghệ thuật vào hiện vật đang chọn
   activeHighlightSpot.position.lerp(targetSpotPos, 0.08);
   activeSpotTarget.position.lerp(targetLookPos, 0.08);
-  activeHighlightSpot.intensity = 4.8 + Math.sin(elapsed * 2.2) * 0.35;
+  activeHighlightSpot.intensity = 6.2 + Math.sin(elapsed * 2.2) * 0.45;
 
   renderer.render(scene, camera);
 }

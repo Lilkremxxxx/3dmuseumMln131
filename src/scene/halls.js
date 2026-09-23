@@ -223,18 +223,18 @@ export function buildMuseumHalls(scene) {
     0x27ae60
   );
 
-  // ── HỆ THỐNG CHIẾU SÁNG DARK MODE & ÁNH ĐÈN VÀNG NGHỆ THUẬT ──
-  // 1. Ánh sáng môi trường vàng ấm (Ambient Light - không quá tối)
-  const ambientLight = new THREE.AmbientLight(0xffdfb8, 0.58);
+  // ── HỆ THỐNG CHIẾU SÁNG DARK MODE & ÁNH ĐÈN VÀNG NGHỆ THUẬT (TĂNG 30% ĐỘ SÁNG) ──
+  // 1. Ánh sáng môi trường vàng ấm (Ambient Light)
+  const ambientLight = new THREE.AmbientLight(0xffe6cb, 0.78);
   hallsGroup.add(ambientLight);
 
   // 2. Bán cầu ánh sáng mô phỏng không gian bảo tàng (Hemisphere Light)
-  const hemiLight = new THREE.HemisphereLight(0xffe2be, 0x1b202a, 0.52);
+  const hemiLight = new THREE.HemisphereLight(0xffe8c8, 0x231a14, 0.70);
   hemiLight.position.set(0, 15, 0);
   hallsGroup.add(hemiLight);
 
   // 3. Ánh sáng vàng dịu qua giếng trời (Directional Sun)
-  const sunLight = new THREE.DirectionalLight(0xffdfa8, 0.78);
+  const sunLight = new THREE.DirectionalLight(0xffe2b4, 1.05);
   sunLight.position.set(10, 20, 20);
   sunLight.castShadow = true;
   sunLight.shadow.mapSize.width = 2048;
@@ -245,16 +245,16 @@ export function buildMuseumHalls(scene) {
 
   // 4. Dàn đèn rọi vàng ấm dọc hành lang trần và tường
   for (let z = -5; z <= 105; z += 8) {
-    const trackLight = new THREE.PointLight(0xffbe6b, 1.25, 18, 1.35);
+    const trackLight = new THREE.PointLight(0xffc77d, 1.65, 20, 1.3);
     trackLight.position.set(0, HEIGHT - 0.4, z);
     hallsGroup.add(trackLight);
 
     // Đèn hắt vàng ấm hai bên tường
-    const wallLightL = new THREE.PointLight(0xffb058, 0.75, 12, 1.6);
+    const wallLightL = new THREE.PointLight(0xffbd6e, 1.0, 14, 1.5);
     wallLightL.position.set(-WIDTH / 2 + 1.5, HEIGHT - 1.2, z);
     hallsGroup.add(wallLightL);
 
-    const wallLightR = new THREE.PointLight(0xffb058, 0.75, 12, 1.6);
+    const wallLightR = new THREE.PointLight(0xffbd6e, 1.0, 14, 1.5);
     wallLightR.position.set(WIDTH / 2 - 1.5, HEIGHT - 1.2, z);
     hallsGroup.add(wallLightR);
   }

@@ -110,7 +110,7 @@ export function createExhibitObjects(scene) {
     pedGroup.add(badgeMesh);
 
     // ── 5. SPOTLIGHT VÀNG ẤM RỌI HIỆN VẬT TỪ TRẦN CAO ────────────
-    const spot = new THREE.SpotLight(0xffdfa8, 3.6, 14, Math.PI / 4, 0.4, 1.2);
+    const spot = new THREE.SpotLight(0xffdfa8, 4.7, 16, Math.PI / 4, 0.4, 1.2);
     spot.position.set(0, 6.0, 0);
     spot.target = bodyMesh;
     pedGroup.add(spot);
@@ -217,7 +217,7 @@ function buildArtDisplayFrame(data, textureLoader, goldMat, animators) {
   lampGroup.add(shade);
 
   // Nguồn sáng vàng ấm rọi trực tiếp từ chóa đèn vào mặt tranh
-  const lampLight = new THREE.SpotLight(0xffdf99, 2.2, 3.2, Math.PI / 3, 0.45, 1.2);
+  const lampLight = new THREE.SpotLight(0xffdf99, 2.85, 3.5, Math.PI / 3, 0.45, 1.2);
   lampLight.position.set(0, 0.14, 0.25);
   lampLight.target = canvasMesh;
   lampGroup.add(lampLight);
@@ -237,7 +237,7 @@ function buildArtDisplayFrame(data, textureLoader, goldMat, animators) {
   // Nhịp thở ánh sáng đèn rọi tranh
   if (animators) {
     animators.push((time) => {
-      lampLight.intensity = 2.2 + Math.sin(time * 2.5 + data.id) * 0.15;
+      lampLight.intensity = 2.85 + Math.sin(time * 2.5 + data.id) * 0.2;
     });
   }
 
