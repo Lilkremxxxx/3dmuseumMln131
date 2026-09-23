@@ -10,20 +10,19 @@ export function createWaypoints(scene, onWaypointClick) {
   const waypoints = [];
   const animators = [];
 
-  // Material phát sáng
   const ringMat = new THREE.MeshBasicMaterial({
-    color: 0x00d4ff,
+    color: 0x0099cc,
     side: THREE.DoubleSide,
     transparent: true,
     opacity: 0.65,
   });
 
   const arrowMat = new THREE.MeshStandardMaterial({
-    color: 0xf39c12,
-    emissive: 0xf39c12,
-    emissiveIntensity: 0.5,
-    roughness: 0.3,
-    metalness: 0.7,
+    color: 0xd4af37,
+    emissive: 0xd4af37,
+    emissiveIntensity: 0.4,
+    roughness: 0.25,
+    metalness: 0.75,
   });
 
   EXHIBITS_DATA.forEach((exhibit, index) => {
@@ -46,7 +45,7 @@ export function createWaypoints(scene, onWaypointClick) {
 
     const innerDot = new THREE.Mesh(
       new THREE.CircleGeometry(0.18, 24),
-      new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.75 })
+      new THREE.MeshBasicMaterial({ color: 0x0099cc, transparent: true, opacity: 0.75 })
     );
     innerDot.rotation.x = -Math.PI / 2;
     wp.add(innerDot);
@@ -54,7 +53,6 @@ export function createWaypoints(scene, onWaypointClick) {
     // 2. Mũi tên 3D chỉ hướng lơ lửng chỉ về phía hiện vật
     const arrowGroup = new THREE.Group();
     
-    // Thân mũi tên
     const shaft = new THREE.Mesh(
       new THREE.CylinderGeometry(0.04, 0.04, 0.45, 12),
       arrowMat.clone()
@@ -62,7 +60,6 @@ export function createWaypoints(scene, onWaypointClick) {
     shaft.position.y = 0.22;
     arrowGroup.add(shaft);
 
-    // Đầu nhọn mũi tên
     const cone = new THREE.Mesh(
       new THREE.ConeGeometry(0.12, 0.25, 16),
       arrowMat.clone()
@@ -72,7 +69,6 @@ export function createWaypoints(scene, onWaypointClick) {
 
     arrowGroup.position.y = 0.35;
     
-    // Hướng mũi tên chỉ về bục hiện vật
     const dir = new THREE.Vector3(
       exhibit.position.x - wpPos.x,
       0,
@@ -80,15 +76,15 @@ export function createWaypoints(scene, onWaypointClick) {
     ).normalize();
     const targetAngle = Math.atan2(dir.x, dir.z);
     arrowGroup.rotation.y = targetAngle;
-    arrowGroup.rotation.x = Math.PI / 4; // Nghiêng 45 độ hướng về hiện vật
+    arrowGroup.rotation.x = Math.PI / 4;
     wp.add(arrowGroup);
 
-    // 3. Bảng nhãn tên nổi 3D (Billboard Badge)
-    const labelBadge = createFloatingLabel(`${exhibit.icon} Bấm bước tới: ${exhibit.title}`);
+    // 3. Bảng nhãn tên nổi 3D (Billboard Badge) - Không dùng icon
+    const labelBadge = createFloatingLabel(`Hiện vật ${exhibit.romanNumeral}: ${exhibit.title}`);
     labelBadge.position.set(0, 0.9, 0);
     wp.add(labelBadge);
 
-    // 4. Vùng collider lớn giúp dễ click trúng
+    // 4. Vùng collider lớn
     const wpCollider = new THREE.Mesh(
       new THREE.CylinderGeometry(1.0, 1.0, 1.5, 16),
       new THREE.MeshBasicMaterial({ visible: false })
@@ -100,7 +96,6 @@ export function createWaypoints(scene, onWaypointClick) {
     waypointGroup.add(wp);
     waypoints.push(wp);
 
-    // Hoạt ảnh nhấp nhô & phát sáng cho mũi tên
     animators.push((time) => {
       const pulse = Math.sin(time * 3 + index) * 0.15;
       outerRing.scale.set(1 + pulse, 1 + pulse, 1);
@@ -116,27 +111,31 @@ export function createWaypoints(scene, onWaypointClick) {
 
 function createFloatingLabel(text) {
   const canvas = document.createElement('canvas');
-  canvas.width = 600;
+  canvas.width = 640;
   canvas.height = 120;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = 'rgba(5, 15, 30, 0.9)';
-  ctx.roundRect ? ctx.roundRect(10, 10, 580, 100, 20) : ctx.fillRect(10, 10, 580, 100);
+  ctx.fillStyle = 'rgba(250, 248, 245, 0.96)';
+  if (ctx.roundRect) {
+    ctx.roundRect(10, 10, 620, 100, 20);
+  } else {
+    ctx.fillRect(10, 10, 620, 100);
+  }
   ctx.fill();
 
-  ctx.strokeStyle = '#00d4ff';
+  ctx.strokeStyle = '#d4af37';
   ctx.lineWidth = 4;
   ctx.stroke();
 
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 24px "Segoe UI", sans-serif';
+  ctx.fillStyle = '#1c2833';
+  ctx.font = 'bold 22px "Montserrat", "Segoe UI", sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, 300, 60);
+  ctx.fillText(text, 320, 60);
 
   const texture = new THREE.CanvasTexture(canvas);
   const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
   const sprite = new THREE.Sprite(spriteMat);
-  sprite.scale.set(2.2, 0.45, 1);
+  sprite.scale.set(2.4, 0.45, 1);
   return sprite;
 }

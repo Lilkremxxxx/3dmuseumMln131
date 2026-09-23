@@ -6,7 +6,7 @@ import { createWaypoints } from './navigation/waypointManager.js';
 import { CameraController } from './navigation/cameraController.js';
 import { ModalManager } from './ui/modalManager.js';
 
-// ── RENDERER & SCENE SETUP ────────────────────────────────────
+// ── RENDERER & SCENE SETUP (KHÔNG GIAN SÁNG RỰC RỠ) ───────────
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -14,14 +14,15 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.35; // Tăng sáng rực rỡ
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0c1017);
-scene.fog = new THREE.FogExp2(0x0c1017, 0.015);
+// Nền sảnh bảo tàng màu sáng ấm cúng
+scene.background = new THREE.Color(0xf2efe9);
+scene.fog = new THREE.Fog(0xf2efe9, 32, 115);
 
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 150);
-camera.position.set(0, 1.65, -4); // Điểm xuất phát tại sảnh chính
+camera.position.set(0, 1.65, -4);
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -51,11 +52,11 @@ let currentActiveIndex = 0;
 let isTourRunning = false;
 let tourTimer = null;
 
-// Populate quick select dropdown
+// Thêm 10 hiện vật vào danh sách chọn nhanh (không emoji)
 EXHIBITS_DATA.forEach((ex, idx) => {
   const opt = document.createElement('option');
   opt.value = idx;
-  opt.textContent = `${idx + 1}. ${ex.icon} ${ex.title}`;
+  opt.textContent = `Hiện vật ${ex.romanNumeral}: ${ex.title}`;
   quickSelectEl.appendChild(opt);
 });
 
@@ -80,7 +81,7 @@ const cameraController = new CameraController(
     currentActiveIndex = index;
     quickSelectEl.value = index;
     if (currentExhibitBadgeEl) {
-      currentExhibitBadgeEl.textContent = `Hiện vật ${index + 1}/10: ${exhibit.title}`;
+      currentExhibitBadgeEl.textContent = `Hiện vật ${exhibit.romanNumeral}/X: ${exhibit.title}`;
       currentExhibitBadgeEl.style.display = 'block';
     }
     // Tự động mở modal chi tiết khi camera bước đến gần
@@ -88,7 +89,7 @@ const cameraController = new CameraController(
   }
 );
 
-// ── CHỨC NĂNG BẤM MŨI TÊN ĐIỀU HƯỚNG HIỆN VẬT ─────────────────
+// ── ĐIỀU HƯỚNG HIỆN VẬT ───────────────────────────────────────
 function navigateExhibit(direction) {
   let nextIdx = currentActiveIndex + direction;
   if (nextIdx < 0) nextIdx = EXHIBITS_DATA.length - 1;
@@ -102,7 +103,6 @@ function goToExhibit(index) {
   cameraController.approachExhibit(index);
 }
 
-// Gán sự kiện nút bấm trên giao diện
 btnPrevEl.addEventListener('click', () => navigateExhibit(-1));
 btnNextEl.addEventListener('click', () => navigateExhibit(1));
 quickSelectEl.addEventListener('change', (e) => goToExhibit(parseInt(e.target.value)));
@@ -113,7 +113,7 @@ btnStepBackEl.addEventListener('click', () => {
   if (currentExhibitBadgeEl) currentExhibitBadgeEl.style.display = 'none';
 });
 
-// Chế độ Auto Tour dạo quanh 10 hiện vật
+// Tour tự động
 btnAutoTourEl.addEventListener('click', () => {
   if (isTourRunning) {
     stopAutoTour();
@@ -124,14 +124,14 @@ btnAutoTourEl.addEventListener('click', () => {
 
 function startAutoTour() {
   isTourRunning = true;
-  btnAutoTourEl.textContent = '⏹ Dừng Tour';
+  btnAutoTourEl.textContent = 'Dừng Tour';
   btnAutoTourEl.classList.add('active');
   runTourStep(0);
 }
 
 function stopAutoTour() {
   isTourRunning = false;
-  btnAutoTourEl.textContent = '▶ Tự động tham quan';
+  btnAutoTourEl.textContent = 'Tự động tham quan';
   btnAutoTourEl.classList.remove('active');
   if (tourTimer) clearTimeout(tourTimer);
 }
@@ -143,21 +143,21 @@ function runTourStep(index) {
     if (!isTourRunning) return;
     const next = (index + 1) % EXHIBITS_DATA.length;
     runTourStep(next);
-  }, 9000); // Dừng lại 9 giây mỗi hiện vật
+  }, 9000);
 }
 
-// ── RAYCASTING: CLICK VÀO HIỆN VẬT HOẶC MŨI TÊN DƯỚI SÀN ───────
+// ── RAYCASTING: CLICK HIỆN VẬT HOẶC MŨI TÊN DƯỚI SÀN ──────────
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 canvas.addEventListener('click', (e) => {
-  if (cameraController.dragDistance > 6) return; // Thao tác xoay chuột, không phải click
+  if (cameraController.dragDistance > 6) return;
 
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
 
-  // 1. Kiểm tra click vào Waypoint mũi tên dưới sàn
+  // 1. Click Waypoint mũi tên dưới sàn
   const wpIntersects = raycaster.intersectObjects(waypointGroup.children, true);
   for (const hit of wpIntersects) {
     let p = hit.object;
@@ -171,7 +171,7 @@ canvas.addEventListener('click', (e) => {
     }
   }
 
-  // 2. Kiểm tra click vào Hiện vật 3D
+  // 2. Click Hiện vật 3D
   const exIntersects = raycaster.intersectObjects(exhibitObjects, true);
   for (const hit of exIntersects) {
     let p = hit.object;
@@ -186,7 +186,6 @@ canvas.addEventListener('click', (e) => {
   }
 });
 
-// Thay đổi con trỏ chuột khi hover qua hiện vật hoặc waypoint
 window.addEventListener('pointermove', (e) => {
   if (cameraController.isDragging) return;
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -197,7 +196,7 @@ window.addEventListener('pointermove', (e) => {
   canvas.style.cursor = hits.length > 0 ? 'pointer' : 'default';
 });
 
-// Ẩn màn hình loading khi hoàn tất khởi tạo
+// Ẩn loading khi sẵn sàng
 const loadingOverlay = document.getElementById('loadingOverlay');
 if (loadingOverlay) {
   setTimeout(() => {
@@ -216,13 +215,8 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const elapsed = clock.getElapsedTime();
 
-  // Cập nhật chuyển động camera & tương tác
   cameraController.update(dt);
-
-  // Chạy hoạt ảnh cho 10 hiện vật (quay hologram, khói trầm, cờ bay, radar...)
   exhibitAnimators.forEach((anim) => anim(elapsed));
-
-  // Chạy hoạt ảnh cho mũi tên waypoint phát sáng
   waypointAnimators.forEach((anim) => anim(elapsed));
 
   renderer.render(scene, camera);

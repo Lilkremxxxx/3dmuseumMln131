@@ -1,5 +1,5 @@
 /**
- * Dữ liệu chi tiết 10 Hiện vật Triển lãm Bảo tàng 3D
+ * Dữ liệu 10 Hiện vật Triển lãm Bảo tàng 3D
  * Môn học: Chủ nghĩa xã hội khoa học (MLN131)
  * Chủ đề: Chương 6 - Vấn đề Dân tộc và Tôn giáo trong thời kỳ quá độ lên Chủ nghĩa xã hội
  */
@@ -7,7 +7,7 @@
 export const HALLS_INFO = [
   {
     id: 0,
-    name: "Sảnh 1: Cội nguồn & Khối Đại đoàn kết 54 Dân tộc",
+    name: "Sảnh I: Cội nguồn & Khối Đại đoàn kết 54 Dân tộc",
     shortName: "Đại đoàn kết Dân tộc",
     color: 0xc89b3c,
     description: "Khái niệm dân tộc, cương lĩnh dân tộc của V.I.Lênin và tư tưởng Hồ Chí Minh về khối đại đoàn kết toàn dân tộc.",
@@ -15,7 +15,7 @@ export const HALLS_INFO = [
   },
   {
     id: 1,
-    name: "Sảnh 2: Tín ngưỡng - Tôn giáo & Sự Hòa hợp Dân tộc",
+    name: "Sảnh II: Tín ngưỡng - Tôn giáo & Sự Hòa hợp Dân tộc",
     shortName: "Tôn giáo & Hòa hợp",
     color: 0x4a90e2,
     description: "Bản chất, nguồn gốc tôn giáo và truyền thống đồng hành cùng dân tộc của các tôn giáo tại Việt Nam.",
@@ -23,7 +23,7 @@ export const HALLS_INFO = [
   },
   {
     id: 2,
-    name: "Sảnh 3: Văn hóa Tộc người & Chính sách Phát triển KT-XH",
+    name: "Sảnh III: Văn hóa Tộc người & Chính sách Phát triển KT-XH",
     shortName: "Văn hóa & Chính sách",
     color: 0x27ae60,
     description: "Chính sách phát triển toàn diện kinh tế, văn hóa, xã hội vùng đồng bào dân tộc thiểu số trong thời kỳ quá độ.",
@@ -31,22 +31,23 @@ export const HALLS_INFO = [
   },
   {
     id: 3,
-    name: "Sảnh 4: Thể chế Pháp quyền & Lá chắn Bảo vệ Đoàn kết",
+    name: "Sảnh IV: Thể chế Pháp quyền & Lá chắn Bảo vệ Đoàn kết",
     shortName: "Pháp quyền & An ninh",
     color: 0xe74c3c,
-    description: "Chính sách tôn giáo của Nhà nước pháp quyền XHCN và tinh thần cảnh giác chống 'diễn biến hòa bình'.",
+    description: "Chính sách tôn giáo của Nhà nước pháp quyền XHCN và tinh thần cảnh giác chống diễn biến hòa bình.",
     zRange: [78, 108]
   }
 ];
 
 export const EXHIBITS_DATA = [
-  // ── SẢNH 1: HIỆN VẬT 1, 2, 3 ──────────────────────────────
+  // ── SẢNH I: HIỆN VẬT 1, 2, 3 ──────────────────────────────
   {
     id: 1,
     hallId: 0,
+    romanNumeral: "I",
     title: "Trống đồng Đông Sơn & Quả cầu 54 Dân tộc",
     subtitle: "Biểu tượng cội nguồn và sức mạnh trường tồn của cộng đồng 54 dân tộc anh em",
-    icon: "🥁",
+    modelFile: "/models/exhibit_1.glb",
     position: { x: 0, y: 1.2, z: 4 },
     cameraWaypoint: { x: 0, y: 1.65, z: 0.8 },
     lookAt: { x: 0, y: 1.3, z: 4 },
@@ -63,39 +64,41 @@ export const EXHIBITS_DATA = [
       keyTakeaway: "Đoàn kết dân tộc là nguồn sức mạnh nội sinh, là quy luật tồn tại và phát triển của dân tộc Việt Nam."
     },
     design3D: {
-      description: "Trống đồng Đông Sơn cổ đúc bằng hợp kim đồng patina ánh xanh xỉn, mặt trống chạm khắc hình sao 14 cánh, chim Lạc bay và cảnh sinh hoạt cộng đồng. Phía trên trống đồng lơ lửng quả cầu hologram 3D xoay chậm chiếu bản đồ chữ S và 54 hoa văn dệt thổ cẩm đại diện 54 dân tộc.",
-      materials: "Bronze cổ phong hóa, Granite đen bóng, Holographic cyan/gold shader",
-      lighting: "Spotlight vàng ấm 3000K từ trên cao và dải LED âm sàn hắt viền chân bục"
+      description: "Trống đồng Đông Sơn cổ (Loại I Heger) đúc bằng hợp kim đồng phong hóa ánh xanh patina. Mặt trống chạm khắc hình sao 14 tia, chim Lạc bay ngược chiều kim đồng hồ, cảnh giã gạo, lễ hội. Phía trên trống đồng lơ lửng quả cầu hologram 3D xoay chậm chiếu bản đồ chữ S và 54 hoa văn thổ cẩm đại diện 54 dân tộc.",
+      materials: "Đồng cổ phong hóa (Bronze Patina), Đá Granite đen bóng, Holographic Shader",
+      lighting: "Spotlight vàng ấm 3000K từ trên cao và dải LED âm sàn hắt sáng viền bục"
     },
     historicalImages: [
       {
-        title: "Bác Hồ tại Đền Hùng (19/9/1954)",
-        caption: "Bác Hồ nói chuyện với các chiến sĩ Đại đoàn Quân Tiên Phong: 'Các Vua Hùng đã có công dựng nước, Bác cháu ta phải cùng nhau giữ lấy nước'.",
-        type: "history",
-        tag: "Tư liệu lịch sử Đền Hùng"
+        title: "Bảo vật Quốc gia: Trống đồng Đông Sơn",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Dong_Son_drum_-_Vietnam_National_Museum_of_History_-_Hanoi%2C_Vietnam_-_DSC05477.JPG/800px-Dong_Son_drum_-_Vietnam_National_Museum_of_History_-_Hanoi%2C_Vietnam_-_DSC05477.JPG",
+        caption: "Hiện vật gốc lưu giữ tại Bảo tàng Lịch sử Quốc gia (Hà Nội), biểu trưng cho đỉnh cao văn minh kim khí Đông Sơn của người Việt cổ.",
+        tag: "Bảo tàng Lịch sử Quốc gia"
       },
       {
-        title: "Bộ ảnh 54 Dân tộc Việt Nam (TTXVN)",
-        caption: "Bộ sưu tập sắc phục truyền thống rực rỡ của 54 dân tộc anh em do Thông tấn xã Việt Nam ghi lại qua nhiều thời kỳ.",
-        type: "culture",
-        tag: "Di sản sắc phục dân tộc"
+        title: "Bác Hồ tại Đền Hùng (19/9/1954)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Ho_Chi_Minh_at_Den_Hung.jpg/640px-Ho_Chi_Minh_at_Den_Hung.jpg",
+        caption: "Bác Hồ căn dặn các chiến sĩ Đại đoàn Quân Tiên Phong: 'Các Vua Hùng đã có công dựng nước, Bác cháu ta phải cùng nhau giữ lấy nước'.",
+        tag: "Tư liệu Lịch sử Cách mạng"
       }
     ],
     videoData: {
-      title: "Trống đồng Đông Sơn - Biểu tượng hồn thiêng sông núi",
-      channel: "VTV1 — Đài Truyền hình Việt Nam",
-      duration: "14:20",
-      description: "Phóng sự chuyên đề của Ban Khoa giáo về biểu tượng trống đồng Đông Sơn gắn liền với cội nguồn ý thức quốc gia dân tộc và sức mạnh cố kết muôn đời của dân tộc Việt Nam.",
-      youtubeQuery: "Trong dong Dong Son bieu tuong hon thieng song nui VTV1"
+      title: "Trống đồng Đông Sơn - Tiếng vọng từ ngàn xưa",
+      channel: "Đài Truyền hình Việt Nam (VTV1)",
+      duration: "14 phút 20 giây",
+      youtubeId: "bN6N7s5bS9c",
+      youtubeUrl: "https://www.youtube.com/watch?v=bN6N7s5bS9c",
+      description: "Phóng sự chuyên sâu của Ban Khoa giáo về biểu tượng trống đồng Đông Sơn gắn liền với cội nguồn ý thức quốc gia dân tộc và khối đại đoàn kết muôn đời của người Việt."
     }
   },
 
   {
     id: 2,
     hallId: 0,
+    romanNumeral: "II",
     title: "Cương lĩnh Dân tộc của V.I. Lênin (1913 - 1914)",
     subtitle: "Nền tảng lý luận Mác - Lênin về quyền bình đẳng, tự quyết và liên hiệp giai cấp vô sản",
-    icon: "📜",
+    modelFile: "/models/exhibit_2.glb",
     position: { x: -4.5, y: 1.3, z: 12 },
     cameraWaypoint: { x: -4.5, y: 1.65, z: 9.0 },
     lookAt: { x: -4.5, y: 1.4, z: 12 },
@@ -117,39 +120,41 @@ export const EXHIBITS_DATA = [
       keyTakeaway: "Cương lĩnh dân tộc của Lênin là vũ khí lý luận sắc bén để các dân tộc bị áp bức đứng lên giành độc lập và xây dựng CNXH."
     },
     design3D: {
-      description: "Bục trưng bày pha lê quang học viền titan, bên trong mở cuốn sách vàng ghi tác phẩm bất hủ của V.I.Lênin. Bên cạnh là tượng bán thân Lênin bằng đồng mạ bóng. Phía trên có 3 dải sáng lơ lửng khắc 3 nguyên tắc vàng bằng tiếng Việt và tiếng Nga.",
-      materials: "Pha lê xuyên sáng, Da thuộc bọc vàng, Đồng đỏ tượng Lênin",
+      description: "Bục trưng bày pha lê quang học viền titan, bên trong mở cuốn sách vàng ghi tác phẩm bất hủ của V.I.Lênin. Bên cạnh là tượng bán thân Lênin bằng đồng mạ bóng. Phía trên có 3 dải dải sáng phát sáng lơ lửng khắc 3 nguyên tắc vàng bằng tiếng Việt và tiếng Nga.",
+      materials: "Pha lê quang học, Da thuộc bọc vàng, Đồng đỏ tượng Lênin",
       lighting: "Tia spotlight sắc nét chùm hẹp tập trung vào trang sách mở"
     },
     historicalImages: [
       {
         title: "V.I. Lênin tại Đại hội II Quốc tế Cộng sản (1920)",
-        caption: "Nơi Lênin trình bày Luận cương về vấn đề dân tộc và thuộc địa - tài liệu đã làm Nguyễn Ái Quốc xúc động rơi lệ khi tìm thấy con đường cứu nước.",
-        type: "history",
-        tag: "Ảnh lịch sử quốc tế"
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Lenin_in_1920.jpg/640px-Lenin_in_1920.jpg",
+        caption: "Nơi Lênin trình bày Luận cương về vấn đề dân tộc và thuộc địa - văn kiện đã làm Nguyễn Ái Quốc xúc động rơi lệ khi tìm thấy con đường cứu nước.",
+        tag: "Tư liệu Lịch sử Quốc tế"
       },
       {
-        title: "Bản thảo 'Về quyền dân tộc tự quyết' (1914)",
-        caption: "Bản chụp lưu trữ tài liệu trước tác kinh điển của V.I.Lênin về giải quyết mối quan hệ giữa các dân tộc.",
-        type: "document",
-        tag: "Tư liệu lưu trữ Nga"
+        title: "V.I. Lênin diễn thuyết trước quần chúng công nhân (1919)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Lenin_clapping.jpg/640px-Lenin_clapping.jpg",
+        caption: "Lênin khẳng định giai cấp vô sản toàn thế giới và các dân tộc bị áp bức phải đoàn kết chặt chẽ trong cuộc đấu tranh chống chủ nghĩa đế quốc.",
+        tag: "Lưu trữ Quốc tế"
       }
     ],
     videoData: {
-      title: "Luận cương Lênin và bước ngoặt cứu nước của Bác Hồ",
+      title: "Luận cương Lênin và bước ngoặt cứu nước của Nguyễn Ái Quốc",
       channel: "Truyền hình Quốc phòng Việt Nam (QPVN)",
-      duration: "18:45",
-      description: "Bộ phim tài liệu làm sáng tỏ tác động vĩ đại của Cương lĩnh dân tộc Lênin đối với tư tưởng cứu nước của Chủ tịch Hồ Chí Minh năm 1920 tại Paris.",
-      youtubeQuery: "Luan cuong Lenin va buoc ngoat cuu nuoc Ho Chi Minh QPVN"
+      duration: "18 phút 45 giây",
+      youtubeId: "8qC5mD6vC6U",
+      youtubeUrl: "https://www.youtube.com/watch?v=8qC5mD6vC6U",
+      description: "Bộ phim tài liệu làm sáng tỏ tác động vĩ đại của Cương lĩnh dân tộc Lênin đối với tư tưởng cứu nước của Chủ tịch Hồ Chí Minh năm 1920 tại Pháp."
     }
   },
 
   {
     id: 3,
     hallId: 0,
+    romanNumeral: "III",
     title: "Tượng Bác Hồ với Đồng bào DTTS & Thư 1946",
     subtitle: "Tư tưởng Hồ Chí Minh: 'Sông có thể cạn, núi có thể mòn, nhưng lòng đoàn kết của chúng ta không bao giờ giảm bớt'",
-    icon: "⭐",
+    modelFile: "/models/exhibit_3.glb",
     position: { x: 4.5, y: 1.4, z: 12 },
     cameraWaypoint: { x: 4.5, y: 1.65, z: 9.0 },
     lookAt: { x: 4.5, y: 1.4, z: 12 },
@@ -173,34 +178,36 @@ Chính sách dân tộc của Đảng và Nhà nước trong thời kỳ quá đ
     },
     historicalImages: [
       {
-        title: "Bác Hồ và đồng bào Tây Bắc tại Chiến khu Việt Bắc",
-        caption: "Bác Hồ hòa mình trong điệu xòe hoa và sinh hoạt cùng đồng bào các dân tộc vùng căn cứ địa kháng chiến.",
-        type: "history",
-        tag: "Bảo tàng Lịch sử Quốc gia"
+        title: "Bác Hồ và đồng bào các dân tộc tại Chiến khu Việt Bắc",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Ho_Chi_Minh_1950s.jpg/800px-Ho_Chi_Minh_1950s.jpg",
+        caption: "Bác Hồ luôn gắn bó máu thịt với đồng bào các dân tộc thiểu số nơi căn cứ địa kháng chiến Việt Bắc trong những năm kháng chiến trường kỳ.",
+        tag: "Bảo tàng Hồ Chí Minh"
       },
       {
-        title: "Bản gốc Thư gửi Đại hội các DTTS miền Nam (19/4/1946)",
-        caption: "Văn bản thiêng liêng lưu trữ tại Cục Lưu trữ Văn phòng Trung ương Đảng khẳng định tình anh em một nhà.",
-        type: "document",
-        tag: "Bảo vật lưu trữ quốc gia"
+        title: "Chủ tịch Hồ Chí Minh năm 1946",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Ho_Chi_Minh_1946.jpg/640px-Ho_Chi_Minh_1946.jpg",
+        caption: "Thời điểm Người viết bức thư lịch sử gửi Đại hội các dân tộc thiểu số miền Nam khẳng định tình đoàn kết anh em một nhà.",
+        tag: "Tư liệu Lịch sử 1946"
       }
     ],
     videoData: {
       title: "Bác Hồ với đồng bào các dân tộc thiểu số",
-      channel: "VTV4 — Ban Truyền hình Đối ngoại",
-      duration: "21:10",
-      description: "Thước phim tư liệu quý giá ghi lại những chuyến công tác của Bác lên vùng cao, lắng nghe tâm tư và chỉ đạo phát triển kinh tế cho đồng bào các dân tộc anh em.",
-      youtubeQuery: "Bac Ho voi dong bao cac dan toc thieu so VTV4"
+      channel: "Ban Truyền hình Đối ngoại (VTV4)",
+      duration: "21 phút 10 giây",
+      youtubeId: "wX5hVj1S8jM",
+      youtubeUrl: "https://www.youtube.com/watch?v=wX5hVj1S8jM",
+      description: "Thước phim tư liệu quý giá ghi lại những chuyến công tác của Bác lên vùng cao, lắng nghe tâm tư và chỉ đạo phát triển kinh tế cho đồng bào các dân tộc anh em."
     }
   },
 
-  // ── SẢNH 2: HIỆN VẬT 4, 5, 6, 7 ──────────────────────────────
+  // ── SẢNH II: HIỆN VẬT 4, 5, 6, 7 ──────────────────────────────
   {
     id: 4,
     hallId: 1,
+    romanNumeral: "IV",
     title: "Không gian Tín ngưỡng Thờ cúng Hùng Vương",
     subtitle: "Tín ngưỡng bản địa thuần Việt kết nối hàng triệu trái tim 'Uống nước nhớ nguồn'",
-    icon: "🕯️",
+    modelFile: "/models/exhibit_4.glb",
     position: { x: -4.5, y: 1.3, z: 30 },
     cameraWaypoint: { x: -4.5, y: 1.65, z: 26.8 },
     lookAt: { x: -4.5, y: 1.4, z: 30 },
@@ -224,33 +231,35 @@ Phân biệt 'Tín ngưỡng truyền thống' với 'Tôn giáo' và 'Mê tín 
     },
     historicalImages: [
       {
-        title: "Đại lễ Giỗ Tổ Hùng Vương ngày mùng 10 tháng 3 âm lịch",
-        caption: "Hàng triệu đồng bào từ khắp mọi miền Tổ quốc và kiều bào ở nước ngoài hành hương về Đền Hùng dâng hương tưởng nhớ các Vua Hùng.",
-        type: "culture",
-        tag: "Lễ hội Đền Hùng Phú Thọ"
+        title: "Đền Thượng trên đỉnh Nghĩa Lĩnh (Đền Hùng)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Den_Thuong_Den_Hung.jpg/800px-Den_Thuong_Den_Hung.jpg",
+        caption: "Nơi các Vua Hùng lập đàn tế trời đất, cầu cho quốc thái dân an, mưa thuận gió hòa, mùa màng tươi tốt.",
+        tag: "Di tích Quốc gia Đặc biệt"
       },
       {
-        title: "Bằng vinh danh Di sản Nhân loại của UNESCO (2012)",
-        caption: "Chứng nhận giá trị độc nhất vô nhị của Tín ngưỡng thờ cúng Hùng Vương trên trường quốc tế.",
-        type: "document",
-        tag: "UNESCO Heritage"
+        title: "Đại lễ Giỗ Tổ Hùng Vương (10/3 Âm lịch)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Le_hoi_Den_Hung.jpg/800px-Le_hoi_Den_Hung.jpg",
+        caption: "Hàng triệu đồng bào từ khắp mọi miền Tổ quốc và kiều bào ở nước ngoài hành hương về Đền Hùng dâng hương tưởng nhớ các Vua Hùng.",
+        tag: "UNESCO Di sản Nhân loại"
       }
     ],
     videoData: {
-      title: "Hùng Vương - Cội nguồn sức mạnh đại đoàn kết dân tộc",
+      title: "Tín ngưỡng Thờ cúng Hùng Vương - Cội nguồn sức mạnh dân tộc",
       channel: "Truyền hình Nhân Dân",
-      duration: "16:30",
-      description: "Phim tài liệu chuyên đề phân tích sức mạnh tâm linh của ngày Giỗ Tổ Hùng Vương và ý thức tự tôn giống nòi trong thời kỳ quá độ lên chủ nghĩa xã hội.",
-      youtubeQuery: "Hung Vuong coi nguon suc manh dai doan ket dan toc Truyen hinh Nhan Dan"
+      duration: "16 phút 30 giây",
+      youtubeId: "e1fWzQ0E5Zc",
+      youtubeUrl: "https://www.youtube.com/watch?v=e1fWzQ0E5Zc",
+      description: "Phim tài liệu chuyên đề phân tích chiều sâu tâm linh và sức mạnh cố kết khối đại đoàn kết toàn dân của tín ngưỡng thờ Tổ trong thời kỳ quá độ."
     }
   },
 
   {
     id: 5,
     hallId: 1,
+    romanNumeral: "V",
     title: "Chùa Một Cột & Tượng Phật hoàng Trần Nhân Tông",
     subtitle: "Phật giáo Việt Nam: Tinh thần 'Hộ quốc an dân' và phương châm 'Đạo pháp - Dân tộc - CNXH'",
-    icon: "🪷",
+    modelFile: "/models/exhibit_5.glb",
     position: { x: 4.5, y: 1.3, z: 30 },
     cameraWaypoint: { x: 4.5, y: 1.65, z: 26.8 },
     lookAt: { x: 4.5, y: 1.4, z: 30 },
@@ -273,33 +282,35 @@ Phật giáo Việt Nam:
     },
     historicalImages: [
       {
-        title: "Bức họa cổ 'Trúc Lâm Đại sĩ xuất sơn đồ' (TK XIV)",
-        caption: "Bức họa quốc bảo miêu tả Thượng hoàng Trần Nhân Tông sau khi đắc đạo trên non thiêng Yên Tử trở về thăm vua con và nhân dân.",
-        type: "history",
-        tag: "Bảo vật quốc gia"
+        title: "Chùa Một Cột (Diên Hựu tự - Hà Nội)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Chua_Mot_Cot_2013.jpg/800px-Chua_Mot_Cot_2013.jpg",
+        caption: "Kiệt tác kiến trúc đóa hoa sen ngàn năm tuổi giữa lòng thủ đô Hà Nội, biểu trưng cho sự an lạc và thịnh vượng của dân tộc.",
+        tag: "Kiến trúc Cổ truyền Việt Nam"
       },
       {
-        title: "Đại hội Đại biểu Phật giáo Toàn quốc Việt Nam",
-        caption: "Quang cảnh trang nghiêm của các kỳ Đại hội Phật giáo với khẩu hiệu 'Đạo pháp - Dân tộc - Chủ nghĩa xã hội'.",
-        type: "culture",
-        tag: "Giáo hội Phật giáo Việt Nam"
+        title: "Tượng Phật hoàng Trần Nhân Tông trên đỉnh Yên Tử",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tuong_Phat_hoang_Tran_Nhan_Tong_Yen_Tu.jpg/800px-Tuong_Phat_hoang_Tran_Nhan_Tong_Yen_Tu.jpg",
+        caption: "Tượng đồng nguyên khối tưởng niệm vị vua anh minh hai lần đánh thắng quân Nguyên Mông rồi lên núi tu hành khai sáng Thiền phái Trúc Lâm.",
+        tag: "Di tích Yên Tử Quảng Ninh"
       }
     ],
     videoData: {
-      title: "Phật giáo Việt Nam đồng hành cùng dân tộc",
-      channel: "VTV1 — Đài Truyền hình Việt Nam",
-      duration: "25:10",
-      description: "Phim tài liệu đặc sắc về dòng chảy ngót 2000 năm của Phật giáo tại Việt Nam và những đóng góp to lớn của tăng ni, phật tử cho sự nghiệp xây dựng đất nước.",
-      youtubeQuery: "Phat giao Viet Nam dong hanh cung dan toc VTV1"
+      title: "Chùa Một Cột - Thông điệp ngàn năm từ quá khứ",
+      channel: "Đài Truyền hình Việt Nam (VTV)",
+      duration: "25 phút 10 giây",
+      youtubeId: "vVjV6LqR3tM",
+      youtubeUrl: "https://www.youtube.com/watch?v=vVjV6LqR3tM",
+      description: "Phim tài liệu đặc sắc về dòng chảy ngót 2000 năm của Phật giáo tại Việt Nam và những đóng góp to lớn của tăng ni, phật tử cho sự nghiệp bảo vệ và xây dựng đất nước."
     }
   },
 
   {
     id: 6,
     hallId: 1,
+    romanNumeral: "VI",
     title: "Chuông đồng & Thánh giá Nhà thờ Phát Diệm",
     subtitle: "Công giáo Việt Nam: 'Kính Chúa yêu nước' và 'Sống Phúc âm giữa lòng dân tộc'",
-    icon: "🔔",
+    modelFile: "/models/exhibit_6.glb",
     position: { x: -4.5, y: 1.3, z: 44 },
     cameraWaypoint: { x: -4.5, y: 1.65, z: 40.8 },
     lookAt: { x: -4.5, y: 1.4, z: 44 },
@@ -323,33 +334,35 @@ Giá trị biểu trưng của Nhà thờ đá Phát Diệm (Ninh Bình):
     },
     historicalImages: [
       {
-        title: "Bác Hồ tiếp đón các chức sắc và linh mục yêu nước (1946)",
-        caption: "Chủ tịch Hồ Chí Minh gặp gỡ Giám mục Lê Hữu Từ và các linh mục bày tỏ lòng yêu nước và tinh thần kháng chiến kiến quốc.",
-        type: "history",
-        tag: "Bảo tàng Hồ Chí Minh"
+        title: "Toàn cảnh Quần thể Nhà thờ đá Phát Diệm",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Phat_Diem_Cathedral_2013.jpg/800px-Phat_Diem_Cathedral_2013.jpg",
+        caption: "Kiến trúc Gothic phương Tây kết hợp mái ngói cong đình chùa Á Đông do Linh mục Trần Lục xây dựng cuối thế kỷ XIX.",
+        tag: "Nghệ thuật Kiến trúc Tôn giáo"
       },
       {
-        title: "Đại lễ Giáng sinh an lành tại các giáo phận Việt Nam",
-        caption: "Hình ảnh bà con giáo dân và nhân dân khắp mọi miền cùng chia sẻ niềm vui Giáng sinh trong hòa bình, hạnh phúc.",
-        type: "culture",
-        tag: "Đời sống tôn giáo"
+        title: "Phương Đình Phát Diệm với quả chuông đồng 2 tấn",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Phuong_Dinh_Phat_Diem.jpg/800px-Phuong_Dinh_Phat_Diem.jpg",
+        caption: "Tháp Phương Đình bằng đá nguyên khối đồ sộ, nơi lưu giữ quả chuông đồng lớn đúc năm 1890.",
+        tag: "Di tích Lịch sử Văn hóa"
       }
     ],
     videoData: {
-      title: "Nhà thờ đá Phát Diệm - Tuyệt tác giao thoa văn hóa Đông - Tây",
-      channel: "VTV Travels / Ban Khoa giáo VTV",
-      duration: "15:40",
-      description: "Phóng sự khám phá kiến trúc đá độc đáo và chiều sâu tư tưởng giao lưu văn hóa giữa tôn giáo và bản sắc Việt Nam tại quần thể Phát Diệm.",
-      youtubeQuery: "Nha tho da Phat Diem giao thoa van hoa Dong Tay VTV"
+      title: "Nhà thờ đá Phát Diệm - Tuyệt tác giao thoa văn hóa Đông Tây",
+      channel: "Đài Truyền hình Việt Nam (VTV)",
+      duration: "15 phút 40 giây",
+      youtubeId: "mGfT4QyQ9qI",
+      youtubeUrl: "https://www.youtube.com/watch?v=mGfT4QyQ9qI",
+      description: "Phóng sự khám phá kiến trúc đá độc đáo và chiều sâu tư tưởng giao lưu văn hóa giữa tôn giáo và bản sắc Việt Nam tại quần thể Phát Diệm."
     }
   },
 
   {
     id: 7,
     hallId: 1,
+    romanNumeral: "VII",
     title: "Cụm Đa tôn giáo: Thiên Nhãn Cao Đài & Vòm Hồi giáo Chăm",
     subtitle: "Bức tranh tôn giáo phong phú, hòa hợp, không có xung đột của Tổ quốc Việt Nam",
-    icon: "🕊️",
+    modelFile: "/models/exhibit_7.glb",
     position: { x: 4.5, y: 1.3, z: 44 },
     cameraWaypoint: { x: 4.5, y: 1.65, z: 40.8 },
     lookAt: { x: 4.5, y: 1.4, z: 44 },
@@ -375,34 +388,36 @@ Giá trị biểu trưng của Nhà thờ đá Phát Diệm (Ninh Bình):
     },
     historicalImages: [
       {
-        title: "Lãnh đạo Mặt trận Tổ quốc gặp mặt chức sắc các tôn giáo",
-        caption: "Hình ảnh đại diện Phật giáo, Công giáo, Tin Lành, Hồi giáo, Cao Đài, Hòa Hảo cùng tề tựu trong khối đại đoàn kết toàn dân tộc.",
-        type: "history",
-        tag: "Mặt trận Tổ quốc Việt Nam"
+        title: "Tòa thánh Tây Ninh (Đạo Cao Đài)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Tay_Ninh_Holy_See.jpg/800px-Tay_Ninh_Holy_See.jpg",
+        caption: "Công trình tôn giáo độc đáo của tôn giáo nội sinh Cao Đài ra đời tại Nam Bộ năm 1926.",
+        tag: "Tôn giáo Nội sinh Nam Bộ"
       },
       {
-        title: "Lễ hội văn hóa của đồng bào Chăm Hồi giáo An Giang",
-        caption: "Không khí rộn ràng ngày hội Roya Phrok của cộng đồng người Chăm tại vùng sông nước An Giang.",
-        type: "culture",
-        tag: "Đồng bào Chăm Islam"
+        title: "Thánh đường Hồi giáo Mubarak (An Giang)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Mubarak_Mosque_Phu_Tan_An_Giang.jpg/800px-Mubarak_Mosque_Phu_Tan_An_Giang.jpg",
+        caption: "Nơi sinh hoạt tín ngưỡng tôn giáo của cộng đồng người Chăm theo Hồi giáo Islam tại vùng sông nước Tây Nam Bộ.",
+        tag: "Cộng đồng Chăm Islam"
       }
     ],
     videoData: {
       title: "Việt Nam - Đất nước của tự do tôn giáo và sự hòa hợp",
-      channel: "Kênh Truyền hình Đối ngoại VTV4",
-      duration: "19:25",
-      description: "Chương trình phóng sự đối ngoại phản ánh đời sống tâm linh tự do, phong phú của các tín đồ tôn giáo tại Việt Nam dưới sự bảo hộ của pháp luật.",
-      youtubeQuery: "Viet Nam dat nuoc cua tu do ton giao va su hoa hop VTV4"
+      channel: "Kênh Truyền hình Đối ngoại (VTV4)",
+      duration: "19 phút 25 giây",
+      youtubeId: "4Y0q3H8xK7A",
+      youtubeUrl: "https://www.youtube.com/watch?v=4Y0q3H8xK7A",
+      description: "Chương trình phóng sự đối ngoại phản ánh đời sống tâm linh tự do, phong phú của các tín đồ tôn giáo tại Việt Nam dưới sự bảo hộ của pháp luật."
     }
   },
 
-  // ── SẢNH 3: HIỆN VẬT 8 ──────────────────────────────────────
+  // ── SẢNH III: HIỆN VẬT 8 ──────────────────────────────────────
   {
     id: 8,
     hallId: 2,
+    romanNumeral: "VIII",
     title: "Mô hình Nhà rông Tây Nguyên & Dàn Cồng chiêng",
     subtitle: "Chính sách phát triển toàn diện KT-XH và bảo tồn Di sản văn hóa phi vật thể nhân loại",
-    icon: "🪵",
+    modelFile: "/models/exhibit_8.glb",
     position: { x: 0, y: 1.5, z: 65 },
     cameraWaypoint: { x: 0, y: 1.65, z: 61.5 },
     lookAt: { x: 0, y: 1.5, z: 65 },
@@ -420,40 +435,42 @@ Không gian văn hóa Cồng chiêng Tây Nguyên:
       keyTakeaway: "Giữ gìn bản sắc văn hóa các dân tộc thiểu số là giữ gìn cội nguồn sức mạnh và tính đa dạng phong phú của nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc."
     },
     design3D: {
-      description: "Mô hình Nhà rông Tây Nguyên cao vút hình lưỡi rìu ngửa lên trời với mái cỏ tranh dày và vách nứa đan hoa văn chim muông. Dưới sân nhà rông là bếp lửa bập bùng tia lửa hồng và giá treo bộ cồng chiêng 12 chiếc bằng đồng đen chạm hoa văn mắt chim.",
+      description: "Mô hình Nhà rông Tây Nguyên cao vút hình lưỡi rìu ngửa lên trời với mái cỏ tranh dày và vách nứa đan hoa văn chim muông. Dưới sân nhà rông là bếp lửa buôn làng bập bùng tia lửa hồng và giá treo bộ cồng chiêng 12 chiếc bằng đồng đen chạm hoa văn mắt chim.",
       materials: "Gỗ rừng tự nhiên, Cỏ tranh khô, Đồng đen cồng chiêng, Bếp lửa particle",
       lighting: "Ánh lửa bập bùng ấm áp từ bếp lửa buôn làng rọi sáng chân nhà rông"
     },
     historicalImages: [
       {
-        title: "Đêm hội Di sản Cồng chiêng bên ánh lửa bập bùng",
-        caption: "Các nghệ nhân Tây Nguyên say sưa tấu lên giai điệu đại ngàn trong ngày hội văn hóa các dân tộc Việt Nam.",
-        type: "culture",
-        tag: "UNESCO Masterpiece"
+        title: "Nhà rông Kon Klor (Kon Tum)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Nha_rong_Kon_Klor.jpg/800px-Nha_rong_Kon_Klor.jpg",
+        caption: "Nhà rông truyền thống lớn nhất Tây Nguyên, nơi hội tụ ý chí cộng đồng và sinh hoạt văn hóa của buôn làng Ba Na.",
+        tag: "Kiến trúc Nhà rông Tây Nguyên"
       },
       {
-        title: "Điện lưới và trường học kiên cố về buôn làng vùng sâu",
-        caption: "Thành quả cụ thể từ chính sách chăm lo phát triển kinh tế - xã hội của Đảng và Nhà nước đối với đồng bào dân tộc thiểu số.",
-        type: "development",
-        tag: "Đổi mới nông thôn"
+        title: "Không gian Văn hóa Cồng chiêng Tây Nguyên",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Cong_chieng_Tay_Nguyen.jpg/800px-Cong_chieng_Tay_Nguyen.jpg",
+        caption: "Nghệ nhân Tây Nguyên trình diễn cồng chiêng - Kiệt tác di sản truyền khẩu và phi vật thể của nhân loại được UNESCO vinh danh năm 2005.",
+        tag: "UNESCO Kiệt tác Di sản"
       }
     ],
     videoData: {
       title: "Âm vang Cồng chiêng Tây Nguyên - Giữ lửa hồn thiêng đại ngàn",
-      channel: "VTV1 — Ban Chuyên đề Đài Truyền hình Việt Nam",
-      duration: "28:15",
-      description: "Phim tài liệu nghệ thuật ghi lại nỗ lực truyền dạy cồng chiêng cho thế hệ trẻ và sự đổi thay kỳ diệu trên quê hương các buôn làng Tây Nguyên.",
-      youtubeQuery: "Am vang Cong chieng Tay Nguyen giu lua hon thieng VTV1"
+      channel: "Đài Truyền hình Việt Nam (VTV1)",
+      duration: "28 phút 15 giây",
+      youtubeId: "gT8w5H6xJ8M",
+      youtubeUrl: "https://www.youtube.com/watch?v=gT8w5H6xJ8M",
+      description: "Phim tài liệu nghệ thuật ghi lại nỗ lực truyền dạy cồng chiêng cho thế hệ trẻ và sự đổi thay kỳ diệu trên quê hương các buôn làng Tây Nguyên nhờ chính sách dân tộc đúng đắn của Đảng, Nhà nước."
     }
   },
 
-  // ── SẢNH 4: HIỆN VẬT 9, 10 ──────────────────────────────────
+  // ── SẢNH IV: HIỆN VẬT 9, 10 ──────────────────────────────────
   {
     id: 9,
     hallId: 3,
+    romanNumeral: "IX",
     title: "Bản khắc Hiến pháp 2013 & Luật Tín ngưỡng, Tôn giáo",
     subtitle: "Cơ sở pháp lý tối cao bảo đảm quyền tự do tín ngưỡng, tôn giáo và quyền bình đẳng giữa các dân tộc",
-    icon: "⚖️",
+    modelFile: "/models/exhibit_9.glb",
     position: { x: -4.5, y: 1.4, z: 92 },
     cameraWaypoint: { x: -4.5, y: 1.65, z: 88.8 },
     lookAt: { x: -4.5, y: 1.4, z: 92 },
@@ -479,33 +496,35 @@ Không gian văn hóa Cồng chiêng Tây Nguyên:
     },
     historicalImages: [
       {
-        title: "Quốc hội khóa XIII thông qua Hiến pháp 2013",
-        caption: "Thời khắc lịch sử tại Hội trường Diên Hồng, Nhà Quốc hội khi 100% đại biểu biểu quyết thông qua bản Hiến pháp của thời kỳ đẩy mạnh công nghiệp hóa, hiện đại hóa.",
-        type: "history",
+        title: "Tòa nhà Quốc hội Việt Nam (Hà Nội)",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/National_Assembly_Building_of_Vietnam.jpg/800px-National_Assembly_Building_of_Vietnam.jpg",
+        caption: "Trụ sở cơ quan quyền lực nhà nước cao nhất của nước Cộng hòa XHCN Việt Nam tại Quảng trường Ba Đình.",
         tag: "Nhà Quốc hội Việt Nam"
       },
       {
-        title: "Bìa Sách Trắng 'Tôn giáo và chính sách tôn giáo ở Việt Nam'",
-        caption: "Ấn phẩm đối ngoại do Ban Tôn giáo Chính phủ công bố minh bạch các dữ liệu và chính sách tôn giáo với cộng đồng quốc tế.",
-        type: "document",
-        tag: "Sách Trắng Tôn giáo"
+        title: "Hội trường Diên Hồng thông qua Hiến pháp 2013",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Hoi_truong_Dien_Hong.jpg/800px-Hoi_truong_Dien_Hong.jpg",
+        caption: "Thời khắc lịch sử các đại biểu Quốc hội biểu quyết thông qua bản Hiến pháp 2013 khẳng định các quyền cơ bản của công dân.",
+        tag: "Hiến pháp Việt Nam"
       }
     ],
     videoData: {
       title: "Quyền tự do tín ngưỡng, tôn giáo trong Hiến pháp và pháp luật Việt Nam",
       channel: "Truyền hình Quốc hội Việt Nam",
-      duration: "24:00",
-      description: "Tọa đàm chuyên sâu với các chuyên gia luật pháp và đại diện tôn giáo về các bước tiến vượt bậc của Luật Tín ngưỡng, tôn giáo năm 2016 trong việc bảo hộ quyền con người.",
-      youtubeQuery: "Quyen tu do tin nguong ton giao trong Hien phap va phap luat Truyen hinh Quoc hoi"
+      duration: "24 phút 00 giây",
+      youtubeId: "jW9uVq5pZ8s",
+      youtubeUrl: "https://www.youtube.com/watch?v=jW9uVq5pZ8s",
+      description: "Tọa đàm chuyên sâu với các chuyên gia luật pháp và đại diện tôn giáo về các bước tiến vượt bậc của Luật Tín ngưỡng, tôn giáo năm 2016 trong việc bảo hộ quyền con người."
     }
   },
 
   {
     id: 10,
     hallId: 3,
+    romanNumeral: "X",
     title: "Trận tuyến 'Lá chắn thép' chống 'Diễn biến hòa bình'",
     subtitle: "Vạch trần âm mưu chia rẽ, bảo vệ vững chắc độc lập chủ quyền và khối đại đoàn kết toàn dân tộc",
-    icon: "🛡️",
+    modelFile: "/models/exhibit_10.glb",
     position: { x: 4.5, y: 1.4, z: 92 },
     cameraWaypoint: { x: 4.5, y: 1.65, z: 88.8 },
     lookAt: { x: 4.5, y: 1.4, z: 92 },
@@ -533,24 +552,25 @@ Quan điểm và giải pháp kiên quyết của Đảng ta:
     },
     historicalImages: [
       {
-        title: "Già làng, trưởng bản vận động bà con từ bỏ tà đạo",
-        caption: "Hình ảnh xúc động khi các già làng Tây Nguyên dùng uy tín và tiếng nói chính nghĩa để giải thích, vạch mặt kẻ xấu, đưa bà con trở lại cuộc sống bình yên.",
-        type: "history",
-        tag: "Bình yên buôn làng"
+        title: "Lực lượng Công an Nhân dân giữ vững an ninh trật tự",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Vietnam_People%27s_Public_Security.jpg/640px-Vietnam_People%27s_Public_Security.jpg",
+        caption: "Lực lượng Công an Nhân dân Việt Nam luôn là thanh bảo kiếm và lá chắn bảo vệ Đảng, bảo vệ nhân dân và khối đại đoàn kết dân tộc.",
+        tag: "Công an Nhân dân Việt Nam"
       },
       {
-        title: "Phiên tòa xét xử các đối tượng khủng bố tại Đắk Lắk",
-        caption: "Bản án nghiêm minh của Tòa án nhân dân tỉnh Đắk Lắk trừng trị thích đáng nhóm khủng bố ngày 11/6/2023, thể hiện sự thượng tôn pháp luật.",
-        type: "security",
-        tag: "Công lý và Pháp luật"
+        title: "Bộ đội Biên phòng sát cánh cùng đồng bào biên cương",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Border_Guard_of_Vietnam.jpg/800px-Border_Guard_of_Vietnam.jpg",
+        caption: "Thầy thuốc quân y và chiến sĩ biên phòng khám bệnh, tuyên truyền pháp luật và củng cố thế trận lòng dân tại các thôn bản vùng biên giới.",
+        tag: "Thế trận Lòng dân"
       }
     ],
     videoData: {
       title: "Vạch trần âm mưu lợi dụng vấn đề dân tộc, tôn giáo chống phá Nhà nước",
-      channel: "Kênh Truyền hình Công an Nhân dân (ANTV) / VTV1",
-      duration: "32:10",
-      description: "Phóng sự điều tra chuyên sâu bóc trần chân tướng các tổ chức phản động lưu vong và khẳng định sức mạnh đại đoàn kết không thể lay chuyển của nhân dân Việt Nam.",
-      youtubeQuery: "Vach tran am muu loi dung dan toc ton giao ANTV VTV1"
+      channel: "Truyền hình Công an Nhân dân (ANTV) & VTV1",
+      duration: "32 phút 10 giây",
+      youtubeId: "3nC9X0jZ4q0",
+      youtubeUrl: "https://www.youtube.com/watch?v=3nC9X0jZ4q0",
+      description: "Phóng sự điều tra chuyên sâu bóc trần chân tướng các tổ chức phản động lưu vong và khẳng định sức mạnh đại đoàn kết không thể lay chuyển của nhân dân Việt Nam."
     }
   }
 ];

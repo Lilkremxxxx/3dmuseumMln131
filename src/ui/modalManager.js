@@ -1,5 +1,6 @@
 /**
  * Quản lý Modal thông tin chi tiết Đa phương tiện cho 10 Hiện vật Triển lãm
+ * Tích hợp ảnh tư liệu thật và nhúng video YouTube chính thống
  */
 export class ModalManager {
   constructor(onInspectClick, onPrevClick, onNextClick) {
@@ -7,7 +8,7 @@ export class ModalManager {
     this.onPrevClick = onPrevClick;
     this.onNextClick = onNextClick;
     this.currentExhibit = null;
-    this.currentTab = 'theory'; // 'theory' | 'design' | 'images' | 'video'
+    this.currentTab = 'theory';
 
     this.modalEl = document.getElementById('exhibitModal');
     this.titleEl = document.getElementById('modalTitle');
@@ -19,13 +20,11 @@ export class ModalManager {
   }
 
   initEventListeners() {
-    // Nút đóng modal
     const closeBtn = document.getElementById('modalCloseBtn');
     if (closeBtn) {
       closeBtn.addEventListener('click', () => this.hide());
     }
 
-    // Chuyển tab
     document.querySelectorAll('.modal-tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const tab = e.currentTarget.getAttribute('data-tab');
@@ -33,7 +32,6 @@ export class ModalManager {
       });
     });
 
-    // Nút Inspect 360
     const inspectBtn = document.getElementById('btnModalInspect');
     if (inspectBtn) {
       inspectBtn.addEventListener('click', () => {
@@ -44,7 +42,6 @@ export class ModalManager {
       });
     }
 
-    // Nút Prev/Next
     const prevBtn = document.getElementById('btnModalPrev');
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
@@ -59,7 +56,6 @@ export class ModalManager {
       });
     }
 
-    // Đóng khi bấm phím Escape
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isVisible()) {
         this.hide();
@@ -69,9 +65,9 @@ export class ModalManager {
 
   show(exhibit) {
     this.currentExhibit = exhibit;
-    this.titleEl.innerHTML = `${exhibit.icon} ${exhibit.title}`;
+    this.titleEl.textContent = `Hiện vật ${exhibit.romanNumeral}: ${exhibit.title}`;
     this.subEl.textContent = exhibit.subtitle;
-    this.hallTagEl.textContent = `Chủ đề: ${exhibit.theme}`;
+    this.hallTagEl.textContent = `Chuyên đề: ${exhibit.theme}`;
 
     this.switchTab('theory');
     this.modalEl.classList.add('active');
@@ -79,6 +75,11 @@ export class ModalManager {
 
   hide() {
     this.modalEl.classList.remove('active');
+    // Dừng video đang phát khi đóng modal
+    if (this.bodyEl) {
+      const iframes = this.bodyEl.querySelectorAll('iframe');
+      iframes.forEach(iframe => iframe.src = iframe.src);
+    }
   }
 
   isVisible() {
@@ -100,10 +101,10 @@ export class ModalManager {
       case 'theory':
         html = `
           <div class="theory-box">
-            <div class="theory-topic">📌 ${ex.theory.chapterTopic}</div>
+            <div class="theory-topic">Trọng tâm: ${ex.theory.chapterTopic}</div>
             <div class="theory-text">${ex.theory.content.replace(/\n/g, '<br/>')}</div>
             <div class="theory-takeaway">
-              <strong>💡 Điểm cốt lõi MLN131:</strong> ${ex.theory.keyTakeaway}
+              <strong>Điểm cốt lõi MLN131:</strong> ${ex.theory.keyTakeaway}
             </div>
           </div>
         `;
@@ -112,11 +113,14 @@ export class ModalManager {
       case 'design':
         html = `
           <div class="design-box">
-            <h4 style="color:#00d4ff; margin-bottom:8px;">🎨 Ý tưởng Thiết kế 3D trong Bảo tàng:</h4>
-            <p style="margin-bottom:12px; line-height:1.7;">${ex.design3D.description}</p>
+            <h4 style="color:#d4af37; margin-bottom:10px; font-size:15px;">Ý tưởng Thiết kế 3D Hiện vật:</h4>
+            <p style="margin-bottom:14px; line-height:1.8; color:#e0e0e0;">${ex.design3D.description}</p>
             <div class="design-specs">
               <div><strong>Vật liệu PBR:</strong> ${ex.design3D.materials}</div>
               <div><strong>Ánh sáng & Hiệu ứng:</strong> ${ex.design3D.lighting}</div>
+            </div>
+            <div style="margin-top:16px; padding:12px; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.25); border-radius:6px; font-size:12px;">
+              <strong>Hướng dẫn thay thế 3D Model:</strong> Bạn có thể copy file 3D tùy chỉnh định dạng <code>.glb</code> vào thư mục <code>public/models/exhibit_${ex.id}.glb</code> để ứng dụng tự động hiển thị mô hình thực tế.
             </div>
           </div>
         `;
@@ -127,9 +131,10 @@ export class ModalManager {
           <div class="images-grid">
             ${ex.historicalImages.map(img => `
               <div class="image-card">
-                <div class="image-placeholder">
-                  <div class="image-icon">🖼️</div>
-                  <div class="image-tag">${img.tag}</div>
+                <div class="image-wrapper">
+                  <img src="${img.imageUrl}" alt="${img.title}" loading="lazy" 
+                       onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&auto=format&fit=crop&q=80';" />
+                  <span class="image-tag">${img.tag}</span>
                 </div>
                 <div class="image-title">${img.title}</div>
                 <div class="image-desc">${img.caption}</div>
@@ -144,14 +149,26 @@ export class ModalManager {
         html = `
           <div class="video-box">
             <div class="video-header">
-              <span class="video-channel">📺 ${vid.channel}</span>
-              <span class="video-duration">⏱ ${vid.duration}</span>
+              <span class="video-channel">Kênh tư liệu: ${vid.channel}</span>
+              <span class="video-duration">Thời lượng: ${vid.duration}</span>
             </div>
-            <h3 class="video-title">🎥 ${vid.title}</h3>
+            <h3 class="video-title">${vid.title}</h3>
+            
+            <!-- Trình phát video YouTube nhúng trực tiếp -->
+            <div class="video-embed-container">
+              <iframe 
+                src="https://www.youtube-nocookie.com/embed/${vid.youtubeId}?rel=0" 
+                title="${vid.title}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+
             <p class="video-desc">${vid.description}</p>
             <div class="video-action">
-              <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(vid.youtubeQuery)}" target="_blank" class="video-link-btn">
-                ▶ Xem Phim Tài Liệu Trên Kênh Tư Liệu (YouTube)
+              <a href="${vid.youtubeUrl}" target="_blank" rel="noopener noreferrer" class="video-link-btn">
+                Mở xem trực tiếp trên YouTube
               </a>
             </div>
           </div>
