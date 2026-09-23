@@ -11,18 +11,18 @@ export function createWaypoints(scene, onWaypointClick) {
   const animators = [];
 
   const ringMat = new THREE.MeshBasicMaterial({
-    color: 0x0099cc,
+    color: 0xd4af37,
     side: THREE.DoubleSide,
     transparent: true,
-    opacity: 0.65,
+    opacity: 0.75,
   });
 
   const arrowMat = new THREE.MeshStandardMaterial({
-    color: 0xd4af37,
+    color: 0xffd700,
     emissive: 0xd4af37,
-    emissiveIntensity: 0.4,
-    roughness: 0.25,
-    metalness: 0.75,
+    emissiveIntensity: 0.55,
+    roughness: 0.2,
+    metalness: 0.85,
   });
 
   EXHIBITS_DATA.forEach((exhibit, index) => {
@@ -45,7 +45,7 @@ export function createWaypoints(scene, onWaypointClick) {
 
     const innerDot = new THREE.Mesh(
       new THREE.CircleGeometry(0.18, 24),
-      new THREE.MeshBasicMaterial({ color: 0x0099cc, transparent: true, opacity: 0.75 })
+      new THREE.MeshBasicMaterial({ color: 0xffe082, transparent: true, opacity: 0.85 })
     );
     innerDot.rotation.x = -Math.PI / 2;
     wp.add(innerDot);
@@ -115,7 +115,7 @@ function createFloatingLabel(text) {
   canvas.height = 120;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = 'rgba(250, 248, 245, 0.96)';
+  ctx.fillStyle = 'rgba(20, 15, 12, 0.92)';
   if (ctx.roundRect) {
     ctx.roundRect(10, 10, 620, 100, 20);
   } else {
@@ -127,7 +127,7 @@ function createFloatingLabel(text) {
   ctx.lineWidth = 4;
   ctx.stroke();
 
-  ctx.fillStyle = '#1c2833';
+  ctx.fillStyle = '#f5d77f';
   ctx.font = 'bold 22px "Montserrat", "Segoe UI", sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

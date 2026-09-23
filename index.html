@@ -40,6 +40,15 @@
       height: 100vh;
     }
 
+    /* ── CINEMATIC VIGNETTE (HIỆU ỨNG CHIỀU SÂU ĐIỆN ẢNH BẢO TÀNG) ── */
+    .canvas-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 48%, transparent 38%, rgba(24, 15, 8, 0.22) 65%, rgba(6, 4, 3, 0.76) 115%);
+      z-index: 2;
+    }
+
     /* ── LOADING SCREEN ────────────────────────────────────────── */
     #loadingOverlay {
       position: fixed;
@@ -95,6 +104,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
+      z-index: 10;
     }
 
     /* Top Bar */
@@ -621,6 +631,7 @@
 
   <!-- THREE.JS CANVAS -->
   <canvas id="c"></canvas>
+  <div class="canvas-vignette"></div>
 
   <!-- HUD INTERFACE -->
   <div id="hud">

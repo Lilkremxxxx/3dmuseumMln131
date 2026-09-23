@@ -6,18 +6,31 @@ export function createExhibitObjects(scene) {
   const exhibitObjects = [];
   const animators = [];
   const gltfLoader = new GLTFLoader();
+  const textureLoader = new THREE.TextureLoader();
 
-  // Vật liệu bục trưng bày đá đen cẩm thạch sang trọng
+  // Vật liệu bục trưng bày gỗ gụ & đá sẫm cao cấp phong cách bảo tàng
   const pedestalMat = new THREE.MeshStandardMaterial({
-    color: 0x1e2430, // Đá granite đen bóng phản quang
-    roughness: 0.22,
-    metalness: 0.22,
+    color: 0x1e1611, // Gỗ mun/gụ sẫm bóng mờ bảo tàng
+    roughness: 0.55,
+    metalness: 0.15,
+  });
+
+  const pedestalBaseMat = new THREE.MeshStandardMaterial({
+    color: 0x140e0a,
+    roughness: 0.7,
+    metalness: 0.1,
   });
 
   const goldTrimMat = new THREE.MeshStandardMaterial({
-    color: 0xd4af37,
-    roughness: 0.2,
-    metalness: 0.85,
+    color: 0xd4af37, // Mạ vàng hoàng gia
+    roughness: 0.18,
+    metalness: 0.88,
+  });
+
+  const velvetMat = new THREE.MeshStandardMaterial({
+    color: 0x730e16, // Đệm nhung đỏ bảo tàng
+    roughness: 0.75,
+    metalness: 0.05,
   });
 
   EXHIBITS_DATA.forEach((data, index) => {
@@ -29,51 +42,95 @@ export function createExhibitObjects(scene) {
       data: data
     };
 
-    // ── BỤC TRƯNG BÀY (PEDESTAL) ────────────────────────────────
-    const pedHeight = 0.9;
-    const pedBase = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.65, 1.8, pedHeight, 32),
+    // ── 1. BỆ ĐỠ CHUNG BẢO TÀNG (UNIFIED MUSEUM PEDESTAL) ────────
+    const pedGroup = new THREE.Group();
+
+    // Chân đế bệ vát gờ
+    const baseMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(2.0, 0.18, 1.8),
+      pedestalBaseMat
+    );
+    baseMesh.position.y = 0.09;
+    baseMesh.receiveShadow = true;
+    baseMesh.castShadow = true;
+    pedGroup.add(baseMesh);
+
+    // Thân bục chính
+    const pedHeight = 0.85;
+    const bodyMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1.7, pedHeight, 1.5),
       pedestalMat
     );
-    pedBase.position.y = pedHeight / 2;
-    pedBase.receiveShadow = true;
-    pedBase.castShadow = true;
-    group.add(pedBase);
+    bodyMesh.position.y = 0.18 + pedHeight / 2;
+    bodyMesh.receiveShadow = true;
+    bodyMesh.castShadow = true;
+    pedGroup.add(bodyMesh);
 
-    // Vành vàng trang trí bục
-    const pedRing = new THREE.Mesh(
-      new THREE.TorusGeometry(1.67, 0.04, 16, 48),
+    // Viền nẹp phào chỉ mạ vàng bao quanh mép bục
+    const trimMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1.74, 0.04, 1.54),
       goldTrimMat
     );
-    pedRing.rotation.x = Math.PI / 2;
-    pedRing.position.y = pedHeight;
-    group.add(pedRing);
+    trimMesh.position.y = 0.18 + pedHeight;
+    pedGroup.add(trimMesh);
 
-    // Biển tên hiện vật gắn trước bục - nghiêng nhẹ hướng lên tầm mắt người xem
+    // Tấm đệm nhung đỏ trang trọng đặt khung tranh
+    const cushionMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1.55, 0.03, 1.35),
+      velvetMat
+    );
+    cushionMesh.position.y = 0.18 + pedHeight + 0.02;
+    cushionMesh.receiveShadow = true;
+    pedGroup.add(cushionMesh);
+
+    // ── 2. CỘT BARIE DÂY NHUNG ĐỎ BẢO VỆ (STANCHIONS) ─────────────
+    createVelvetBarrier(pedGroup, goldTrimMat);
+
+    // ── 3. VÒNG HÀO QUANG VÀNG DƯỚI SÀN (FLOOR GLOW RING) ─────────
+    const glowRingGeo = new THREE.RingGeometry(1.4, 1.65, 48);
+    const glowRingMat = new THREE.MeshBasicMaterial({
+      color: 0xffd700,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.6
+    });
+    const glowRing = new THREE.Mesh(glowRingGeo, glowRingMat);
+    glowRing.rotation.x = -Math.PI / 2;
+    glowRing.position.y = 0.015;
+    pedGroup.add(glowRing);
+
+    animators.push((time) => {
+      glowRingMat.opacity = 0.45 + Math.sin(time * 2.2 + index) * 0.2;
+      const s = 1 + Math.sin(time * 2.2 + index) * 0.03;
+      glowRing.scale.set(s, s, 1);
+    });
+
+    // ── 4. BIỂN TÊN HIỆN VẬT GẮN TRƯỚC BỤC (BRASS BADGE) ──────────
     const badgeMesh = createPedestalBadge(data.title, data.romanNumeral);
-    badgeMesh.position.set(0, 0.58, -1.74);
-    badgeMesh.rotation.set(-0.25, Math.PI, 0);
-    group.add(badgeMesh);
+    badgeMesh.position.set(0, 0.62, -0.88);
+    badgeMesh.rotation.set(-0.24, Math.PI, 0); // Nghiêng 14 độ ngửa lên hướng tầm mắt
+    pedGroup.add(badgeMesh);
 
-    // Spotlight vàng ấm rọi riêng từng hiện vật
-    const spot = new THREE.SpotLight(0xffdfa8, 3.8, 12, Math.PI / 4, 0.35);
-    spot.position.set(0, 5.5, 0);
-    spot.target = pedBase;
-    group.add(spot);
+    // ── 5. SPOTLIGHT VÀNG ẤM RỌI HIỆN VẬT TỪ TRẦN CAO ────────────
+    const spot = new THREE.SpotLight(0xffdfa8, 3.6, 14, Math.PI / 4, 0.4, 1.2);
+    spot.position.set(0, 6.0, 0);
+    spot.target = bodyMesh;
+    pedGroup.add(spot);
 
-    // ── MÔ HÌNH 3D (HỖ TRỢ GLTF FILE HOẶC PROCEDURAL) ───────────
+    group.add(pedGroup);
+
+    // ── 6. KHUNG TRANH NGHỆ THUẬT 3D HOẶC 3D GLTF MODEL ──────────
     const modelContainer = new THREE.Group();
-    modelContainer.position.y = pedHeight;
+    modelContainer.position.y = 0.18 + pedHeight + 0.03;
     group.add(modelContainer);
 
-    // Thử tải file .glb nếu người dùng đưa vào thư mục public/models/
+    // Tải mô hình 3D .glb nếu có
     let hasLoadedGltf = false;
     if (data.modelFile) {
       gltfLoader.load(
         data.modelFile,
         (gltf) => {
           hasLoadedGltf = true;
-          // Xóa mô hình tạm nếu có
           while (modelContainer.children.length > 0) {
             modelContainer.remove(modelContainer.children[0]);
           }
@@ -83,55 +140,18 @@ export function createExhibitObjects(scene) {
         },
         undefined,
         () => {
-          // File GLB chưa có sẵn, tiếp tục hiển thị mô hình 3D thủ công
+          // File GLB chưa có, hiển thị khung tranh nghệ thuật tư liệu thật
         }
       );
     }
 
-    // Mô hình 3D thủ công mặc định
-    let defaultModel = null;
-    switch (data.id) {
-      case 1:
-        defaultModel = buildDongSonDrum(animators);
-        break;
-      case 2:
-        defaultModel = buildLeninThesis(animators);
-        break;
-      case 3:
-        defaultModel = buildUncleHoExhibit(animators);
-        break;
-      case 4:
-        defaultModel = buildHungKingAltar(animators);
-        break;
-      case 5:
-        defaultModel = buildOnePillarPagoda(animators);
-        break;
-      case 6:
-        defaultModel = buildPhatDiemBelfry(animators);
-        break;
-      case 7:
-        defaultModel = buildMultiReligionExhibit(animators);
-        break;
-      case 8:
-        defaultModel = buildNhaRongExhibit(animators);
-        break;
-      case 9:
-        defaultModel = buildConstitutionExhibit(animators);
-        break;
-      case 10:
-        defaultModel = buildSecurityShieldExhibit(animators);
-        break;
-      default:
-        defaultModel = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), goldTrimMat);
-    }
+    // Mặc định: Dựng khung tranh nghệ thuật 3D mạ vàng với ảnh tư liệu thật
+    const artFrame = buildArtDisplayFrame(data, textureLoader, goldTrimMat, animators);
+    modelContainer.add(artFrame);
 
-    if (defaultModel) {
-      modelContainer.add(defaultModel);
-    }
-
-    // Collider vô hình bắt click
+    // Collider vô hình bắt click chuột tương tác
     const collider = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.85, 1.85, 3.2, 16),
+      new THREE.CylinderGeometry(1.6, 1.6, 3.2, 16),
       new THREE.MeshBasicMaterial({ visible: false })
     );
     collider.position.y = 1.6;
@@ -145,550 +165,176 @@ export function createExhibitObjects(scene) {
   return { exhibitObjects, animators };
 }
 
-// ── BUILDER CHO 10 HIỆN VẬT THỦ CÔNG SANG TRỌNG ───────────────
+// ── KHUNG TRANH 3D NGHỆ THUẬT MẠ VÀNG (3D ART DISPLAY FRAME) ─────
+function buildArtDisplayFrame(data, textureLoader, goldMat, animators) {
+  const frameGroup = new THREE.Group();
 
-function buildDongSonDrum(animators) {
-  const g = new THREE.Group();
-  const bronzeMat = new THREE.MeshStandardMaterial({
-    color: 0x9e721d,
-    roughness: 0.45,
-    metalness: 0.75,
+  // Nạp ảnh tư liệu thật chất lượng cao
+  const imageUrl = (data.historicalImages && data.historicalImages[0] && data.historicalImages[0].imageUrl)
+    ? data.historicalImages[0].imageUrl
+    : `/images/exhibits/exhibit_${data.id}_1.jpg`;
+
+  const texture = textureLoader.load(imageUrl);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+
+  // Kích thước tranh chuẩn bảo tàng (Rộng 1.7m, Cao 1.25m)
+  const W = 1.7;
+  const H = 1.25;
+  const D = 0.1;
+
+  // 1. Khung gỗ sẫm phía sau (Dark Walnut / Mahogany Frame)
+  const woodMat = new THREE.MeshStandardMaterial({
+    color: 0x221711,
+    roughness: 0.65,
+    metalness: 0.15
   });
-  const patinaMat = new THREE.MeshStandardMaterial({
-    color: 0x41726a,
-    roughness: 0.6,
-    metalness: 0.35,
+  const backFrame = new THREE.Mesh(new THREE.BoxGeometry(W + 0.24, H + 0.24, D), woodMat);
+  backFrame.position.set(0, 0, -D / 2);
+  backFrame.castShadow = true;
+  backFrame.receiveShadow = true;
+  frameGroup.add(backFrame);
+
+  // 2. Viền phào chỉ mạ vàng hoàng gia ôm sát mép tranh (Gold Gilded Bevel Trim)
+  const innerGold = new THREE.Mesh(new THREE.BoxGeometry(W + 0.08, H + 0.08, 0.03), goldMat);
+  innerGold.position.set(0, 0, 0.015);
+  frameGroup.add(innerGold);
+
+  // 3. Mặt tranh in ảnh tư liệu thật (Canvas Painting Plane)
+  const canvasMat = new THREE.MeshStandardMaterial({
+    map: texture,
+    roughness: 0.65,
+    metalness: 0.05
   });
+  const canvasMesh = new THREE.Mesh(new THREE.PlaneGeometry(W, H), canvasMat);
+  canvasMesh.position.set(0, 0, 0.035);
+  canvasMesh.receiveShadow = true;
+  frameGroup.add(canvasMesh);
 
-  const drumUpper = new THREE.Mesh(new THREE.CylinderGeometry(0.72, 0.62, 0.35, 32), bronzeMat);
-  drumUpper.position.y = 0.55;
-  g.add(drumUpper);
-
-  const drumWaist = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.3, 32), patinaMat);
-  drumWaist.position.y = 0.28;
-  g.add(drumWaist);
-
-  const drumBase = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.78, 0.35, 32), bronzeMat);
-  drumBase.position.y = 0.12;
-  g.add(drumBase);
-
-  const faceMat = new THREE.MeshStandardMaterial({ color: 0xb38622, roughness: 0.4, metalness: 0.8 });
-  const faceMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.73, 0.73, 0.05, 32), faceMat);
-  faceMesh.position.y = 0.73;
-  g.add(faceMesh);
-
-  for (let r = 0.25; r <= 0.65; r += 0.12) {
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(r, 0.008, 8, 32), bronzeMat);
-    ring.rotation.x = Math.PI / 2;
-    ring.position.y = 0.76;
-    g.add(ring);
-  }
-
-  const holoGeo = new THREE.SphereGeometry(0.38, 24, 24);
-  const holoMat = new THREE.MeshBasicMaterial({
-    color: 0x0099cc,
-    wireframe: true,
+  // 4. Mặt kính bảo tàng phản quang mờ (Museum Anti-reflective Glass)
+  const glassMat = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    roughness: 0.05,
+    metalness: 0.1,
     transparent: true,
-    opacity: 0.45,
+    opacity: 0.12
   });
-  const holoSphere = new THREE.Mesh(holoGeo, holoMat);
-  holoSphere.position.y = 1.35;
-  g.add(holoSphere);
+  const glassMesh = new THREE.Mesh(new THREE.PlaneGeometry(W, H), glassMat);
+  glassMesh.position.set(0, 0, 0.045);
+  frameGroup.add(glassMesh);
 
-  const orbitRing = new THREE.Mesh(
-    new THREE.TorusGeometry(0.48, 0.012, 8, 32),
-    new THREE.MeshBasicMaterial({ color: 0xd4af37 })
-  );
-  orbitRing.rotation.x = Math.PI / 3;
-  orbitRing.position.y = 1.35;
-  g.add(orbitRing);
+  // 5. Đèn rọi tranh chuyên dụng gắn đỉnh khung tranh (Gallery Picture Light)
+  const lampGroup = new THREE.Group();
+  lampGroup.position.set(0, H / 2 + 0.12, 0);
 
-  animators.push((time) => {
-    holoSphere.rotation.y = time * 0.4;
-    orbitRing.rotation.z = time * 0.6;
-    holoSphere.position.y = 1.35 + Math.sin(time * 2) * 0.04;
-  });
+  // Cần đèn kim loại mạ vàng cong vươn ra
+  const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.3, 12), goldMat);
+  arm.rotation.x = Math.PI / 3.4;
+  arm.position.set(0, 0.06, 0.12);
+  lampGroup.add(arm);
 
-  return g;
-}
+  // Chóa đèn dạng thanh đồng ngang trên đầu bức tranh
+  const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.8, 16), goldMat);
+  shade.rotation.z = Math.PI / 2;
+  shade.position.set(0, 0.14, 0.24);
+  shade.castShadow = true;
+  lampGroup.add(shade);
 
-function buildLeninThesis(animators) {
-  const g = new THREE.Group();
-  
-  const caseGeo = new THREE.BoxGeometry(1.4, 1.2, 1.0);
-  const caseMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.25, roughness: 0.05 });
-  const displayCase = new THREE.Mesh(caseGeo, caseMat);
-  displayCase.position.y = 0.65;
-  g.add(displayCase);
+  // Nguồn sáng vàng ấm rọi trực tiếp từ chóa đèn vào mặt tranh
+  const lampLight = new THREE.SpotLight(0xffdf99, 2.2, 3.2, Math.PI / 3, 0.45, 1.2);
+  lampLight.position.set(0, 0.14, 0.25);
+  lampLight.target = canvasMesh;
+  lampGroup.add(lampLight);
 
-  const standMesh = new THREE.Mesh(
-    new THREE.BoxGeometry(0.8, 0.15, 0.5),
-    new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.3 })
-  );
-  standMesh.rotation.x = -Math.PI / 6;
-  standMesh.position.set(0, 0.45, 0);
-  g.add(standMesh);
+  frameGroup.add(lampGroup);
 
-  const bookCoverMat = new THREE.MeshStandardMaterial({ color: 0x8b0000, roughness: 0.5 });
-  const bookPageMat = new THREE.MeshStandardMaterial({ color: 0xfbf8ee, roughness: 0.8 });
+  // 6. Chân giá đỡ gỗ nghiêng phía sau (Easel Back Support)
+  const easelLeg = new THREE.Mesh(new THREE.BoxGeometry(0.08, H + 0.35, 0.04), woodMat);
+  easelLeg.position.set(0, -0.08, -0.22);
+  easelLeg.rotation.x = Math.PI / 7.5;
+  frameGroup.add(easelLeg);
 
-  const leftPage = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.02, 0.42), bookPageMat);
-  leftPage.position.set(-0.16, 0.52, 0);
-  leftPage.rotation.x = -Math.PI / 6;
-  leftPage.rotation.y = 0.05;
-  g.add(leftPage);
+  // Khung tranh nghiêng góc 18° nghệ thuật trên mặt bục
+  frameGroup.rotation.x = -Math.PI / 10;
+  frameGroup.position.set(0, H / 2 + 0.08, 0.1);
 
-  const rightPage = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.02, 0.42), bookPageMat);
-  rightPage.position.set(0.16, 0.52, 0);
-  rightPage.rotation.x = -Math.PI / 6;
-  rightPage.rotation.y = -0.05;
-  g.add(rightPage);
-
-  const bustMat = new THREE.MeshStandardMaterial({ color: 0xb5882b, roughness: 0.35, metalness: 0.8 });
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), bustMat);
-  head.position.set(-0.4, 0.65, 0.15);
-  g.add(head);
-
-  const chest = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.18, 0.22, 16), bustMat);
-  chest.position.set(-0.4, 0.48, 0.15);
-  g.add(chest);
-
-  const ribbon = new THREE.Mesh(
-    new THREE.TorusGeometry(0.68, 0.015, 8, 32),
-    new THREE.MeshBasicMaterial({ color: 0xc0392b, transparent: true, opacity: 0.6 })
-  );
-  ribbon.rotation.x = Math.PI / 2.5;
-  ribbon.position.y = 0.8;
-  g.add(ribbon);
-
-  animators.push((time) => {
-    ribbon.rotation.z = time * 0.3;
-  });
-
-  return g;
-}
-
-function buildUncleHoExhibit(animators) {
-  const g = new THREE.Group();
-  const bronzeMat = new THREE.MeshStandardMaterial({ color: 0x8c622b, roughness: 0.4, metalness: 0.65 });
-
-  const hoTorso = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.32, 0.8, 16), bronzeMat);
-  hoTorso.position.set(0, 0.55, 0.1);
-  g.add(hoTorso);
-
-  const hoHead = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), bronzeMat);
-  hoHead.position.set(0, 1.05, 0.1);
-  g.add(hoHead);
-
-  const child1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.5, 12), bronzeMat);
-  child1.position.set(-0.35, 0.38, 0.25);
-  g.add(child1);
-
-  const child2 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.5, 12), bronzeMat);
-  child2.position.set(0.35, 0.38, 0.25);
-  g.add(child2);
-
-  const desk = new THREE.Mesh(
-    new THREE.BoxGeometry(0.5, 0.3, 0.4),
-    new THREE.MeshStandardMaterial({ color: 0x5a3818, roughness: 0.5 })
-  );
-  desk.position.set(0, 0.25, -0.4);
-  desk.rotation.x = -Math.PI / 8;
-  g.add(desk);
-
-  const letter = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.35, 0.25),
-    new THREE.MeshStandardMaterial({ color: 0xfffcf5, roughness: 0.9 })
-  );
-  letter.rotation.x = -Math.PI / 2.3;
-  letter.position.set(0, 0.42, -0.38);
-  g.add(letter);
-
-  const seal = new THREE.Mesh(
-    new THREE.CircleGeometry(0.025, 16),
-    new THREE.MeshBasicMaterial({ color: 0xc0392b })
-  );
-  seal.rotation.x = -Math.PI / 2.3;
-  seal.position.set(0.1, 0.43, -0.36);
-  g.add(seal);
-
-  return g;
-}
-
-function buildHungKingAltar(animators) {
-  const g = new THREE.Group();
-  const woodMat = new THREE.MeshStandardMaterial({ color: 0x6e2428, roughness: 0.45 });
-  const goldMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.25, metalness: 0.85 });
-
-  const colGeo = new THREE.CylinderGeometry(0.06, 0.06, 1.4, 12);
-  for (const [cx, cz] of [[-0.6, -0.4], [0.6, -0.4], [-0.6, 0.4], [0.6, 0.4]]) {
-    const col = new THREE.Mesh(colGeo, woodMat);
-    col.position.set(cx, 0.7, cz);
-    g.add(col);
-  }
-
-  const roof = new THREE.Mesh(
-    new THREE.ConeGeometry(0.95, 0.4, 4),
-    new THREE.MeshStandardMaterial({ color: 0xa93226, roughness: 0.65 })
-  );
-  roof.rotation.y = Math.PI / 4;
-  roof.position.set(0, 1.5, 0);
-  g.add(roof);
-
-  const altarTable = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.45, 0.55), woodMat);
-  altarTable.position.set(0, 0.25, 0);
-  g.add(altarTable);
-
-  const censer = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.2, 16), goldMat);
-  censer.position.set(0, 0.58, 0);
-  g.add(censer);
-
-  for (const hx of [-0.3, 0.3]) {
-    const crane = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.02, 0.35, 8), goldMat);
-    crane.position.set(hx, 0.65, 0);
-    g.add(crane);
-  }
-
-  const smokeParticles = [];
-  const smokeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
-  for (let i = 0; i < 6; i++) {
-    const p = new THREE.Mesh(new THREE.SphereGeometry(0.025 + i * 0.008, 8, 8), smokeMat);
-    p.position.set(0, 0.7 + i * 0.08, 0);
-    g.add(p);
-    smokeParticles.push({ mesh: p, baseHeight: 0.7 + i * 0.08 });
-  }
-
-  animators.push((time) => {
-    smokeParticles.forEach((sp, idx) => {
-      sp.mesh.position.y = sp.baseHeight + Math.sin(time * 2 + idx) * 0.04;
-      sp.mesh.position.x = Math.sin(time * 1.5 + idx) * 0.02;
+  // Nhịp thở ánh sáng đèn rọi tranh
+  if (animators) {
+    animators.push((time) => {
+      lampLight.intensity = 2.2 + Math.sin(time * 2.5 + data.id) * 0.15;
     });
-  });
-
-  return g;
-}
-
-function buildOnePillarPagoda(animators) {
-  const g = new THREE.Group();
-  
-  const poolWall = new THREE.Mesh(
-    new THREE.BoxGeometry(1.6, 0.2, 1.6),
-    new THREE.MeshStandardMaterial({ color: 0x4a5b60, roughness: 0.5 })
-  );
-  poolWall.position.y = 0.1;
-  g.add(poolWall);
-
-  const water = new THREE.Mesh(
-    new THREE.PlaneGeometry(1.45, 1.45),
-    new THREE.MeshStandardMaterial({ color: 0x2471a3, roughness: 0.08, metalness: 0.2 })
-  );
-  water.rotation.x = -Math.PI / 2;
-  water.position.y = 0.18;
-  g.add(water);
-
-  const stoneCol = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.18, 0.2, 0.7, 16),
-    new THREE.MeshStandardMaterial({ color: 0x95a5a6, roughness: 0.7 })
-  );
-  stoneCol.position.set(-0.25, 0.5, 0);
-  g.add(stoneCol);
-
-  const pagodaBody = new THREE.Mesh(
-    new THREE.BoxGeometry(0.55, 0.35, 0.55),
-    new THREE.MeshStandardMaterial({ color: 0x922b21, roughness: 0.45 })
-  );
-  pagodaBody.position.set(-0.25, 0.95, 0);
-  g.add(pagodaBody);
-
-  const pagodaRoof = new THREE.Mesh(
-    new THREE.ConeGeometry(0.65, 0.3, 4),
-    new THREE.MeshStandardMaterial({ color: 0xb03a2e, roughness: 0.55 })
-  );
-  pagodaRoof.rotation.y = Math.PI / 4;
-  pagodaRoof.position.set(-0.25, 1.25, 0);
-  g.add(pagodaRoof);
-
-  const buddhaMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.25, metalness: 0.8 });
-  const buddhaPed = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, 0.15, 16), buddhaMat);
-  buddhaPed.position.set(0.42, 0.25, 0);
-  g.add(buddhaPed);
-
-  const buddhaBody = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.45, 12), buddhaMat);
-  buddhaBody.position.set(0.42, 0.5, 0);
-  g.add(buddhaBody);
-
-  const buddhaHead = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), buddhaMat);
-  buddhaHead.position.set(0.42, 0.78, 0);
-  g.add(buddhaHead);
-
-  const halo = new THREE.Mesh(
-    new THREE.TorusGeometry(0.18, 0.015, 8, 32),
-    new THREE.MeshBasicMaterial({ color: 0xf1c40f })
-  );
-  halo.position.set(0.42, 0.78, -0.05);
-  g.add(halo);
-
-  animators.push((time) => {
-    halo.scale.setScalar(1 + Math.sin(time * 3) * 0.08);
-  });
-
-  return g;
-}
-
-function buildPhatDiemBelfry(animators) {
-  const g = new THREE.Group();
-  const stoneMat = new THREE.MeshStandardMaterial({ color: 0x626567, roughness: 0.6 });
-  const bronzeMat = new THREE.MeshStandardMaterial({ color: 0x9a7d46, roughness: 0.35, metalness: 0.75 });
-
-  const tower1 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.5, 0.9), stoneMat);
-  tower1.position.y = 0.25;
-  g.add(tower1);
-
-  const archHole = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.2, 0.2, 0.92, 16),
-    new THREE.MeshBasicMaterial({ color: 0x222222 })
-  );
-  archHole.rotation.x = Math.PI / 2;
-  archHole.position.y = 0.25;
-  g.add(archHole);
-
-  const tower2 = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.6, 0.75), stoneMat);
-  tower2.position.y = 0.75;
-  g.add(tower2);
-
-  const bell = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.35, 16), bronzeMat);
-  bell.position.set(0, 0.7, 0);
-  g.add(bell);
-
-  const bellRoof = new THREE.Mesh(
-    new THREE.ConeGeometry(0.85, 0.25, 4),
-    new THREE.MeshStandardMaterial({ color: 0x78281f, roughness: 0.6 })
-  );
-  bellRoof.rotation.y = Math.PI / 4;
-  bellRoof.position.y = 1.15;
-  g.add(bellRoof);
-
-  const crossMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.25, metalness: 0.85 });
-  const crossV = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.45, 0.04), crossMat);
-  crossV.position.set(0, 0.55, 0.55);
-  g.add(crossV);
-
-  const crossH = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.06, 0.04), crossMat);
-  crossH.position.set(0, 0.65, 0.55);
-  g.add(crossH);
-
-  animators.push((time) => {
-    bell.rotation.z = Math.sin(time * 1.5) * 0.08;
-  });
-
-  return g;
-}
-
-function buildMultiReligionExhibit(animators) {
-  const g = new THREE.Group();
-  const turnTable = new THREE.Group();
-  g.add(turnTable);
-
-  const caodaiGroup = new THREE.Group();
-  caodaiGroup.position.set(-0.45, 0, 0);
-
-  const caodaiGlobe = new THREE.Mesh(
-    new THREE.SphereGeometry(0.28, 24, 24),
-    new THREE.MeshStandardMaterial({ color: 0x2471a3, roughness: 0.3, metalness: 0.4 })
-  );
-  caodaiGlobe.position.y = 0.55;
-  caodaiGroup.add(caodaiGlobe);
-
-  const eyeHalo = new THREE.Mesh(
-    new THREE.TorusGeometry(0.36, 0.02, 12, 32),
-    new THREE.MeshBasicMaterial({ color: 0xf39c12 })
-  );
-  eyeHalo.position.set(0, 0.55, 0);
-  caodaiGroup.add(eyeHalo);
-  turnTable.add(caodaiGroup);
-
-  const islamGroup = new THREE.Group();
-  islamGroup.position.set(0.45, 0, 0);
-
-  const dome = new THREE.Mesh(
-    new THREE.SphereGeometry(0.3, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2),
-    new THREE.MeshStandardMaterial({ color: 0x16a085, roughness: 0.25, metalness: 0.5 })
-  );
-  dome.position.y = 0.35;
-  islamGroup.add(dome);
-
-  const crescent = new THREE.Mesh(
-    new THREE.TorusGeometry(0.1, 0.025, 8, 24, Math.PI * 1.5),
-    new THREE.MeshBasicMaterial({ color: 0xf1c40f })
-  );
-  crescent.position.set(0, 0.75, 0);
-  islamGroup.add(crescent);
-  turnTable.add(islamGroup);
-
-  const bridge = new THREE.Mesh(
-    new THREE.TorusGeometry(0.65, 0.02, 8, 32, Math.PI),
-    new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.85 })
-  );
-  bridge.rotation.x = Math.PI / 2;
-  bridge.position.y = 0.15;
-  turnTable.add(bridge);
-
-  animators.push((time) => {
-    turnTable.rotation.y = time * 0.25;
-  });
-
-  return g;
-}
-
-function buildNhaRongExhibit(animators) {
-  const g = new THREE.Group();
-  const woodMat = new THREE.MeshStandardMaterial({ color: 0x784212, roughness: 0.65 });
-  const thatchMat = new THREE.MeshStandardMaterial({ color: 0xd35400, roughness: 0.85 });
-  const bronzeMat = new THREE.MeshStandardMaterial({ color: 0x5b4822, roughness: 0.4, metalness: 0.75 });
-
-  for (const [x, z] of [[-0.4, -0.3], [0.4, -0.3], [-0.4, 0.3], [0.4, 0.3]]) {
-    const col = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.5, 8), woodMat);
-    col.position.set(x, 0.25, z);
-    g.add(col);
   }
 
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.06, 0.75), woodMat);
-  floor.position.y = 0.5;
-  g.add(floor);
-
-  const roof = new THREE.Mesh(new THREE.ConeGeometry(0.7, 1.4, 4), thatchMat);
-  roof.scale.set(0.6, 1.0, 1.2);
-  roof.position.set(0, 1.25, 0);
-  g.add(roof);
-
-  const gongRack = new THREE.Mesh(
-    new THREE.BoxGeometry(0.8, 0.04, 0.04),
-    new THREE.MeshStandardMaterial({ color: 0x333333 })
-  );
-  gongRack.position.set(0, 0.45, 0.55);
-  g.add(gongRack);
-
-  for (let i = -2; i <= 2; i++) {
-    const r = 0.07 - Math.abs(i) * 0.01;
-    const gong = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 0.015, 16), bronzeMat);
-    gong.rotation.x = Math.PI / 2;
-    gong.position.set(i * 0.16, 0.38, 0.55);
-    g.add(gong);
-  }
-
-  const fire = new THREE.Mesh(
-    new THREE.ConeGeometry(0.12, 0.25, 8),
-    new THREE.MeshBasicMaterial({ color: 0xe67e22 })
-  );
-  fire.position.set(0, 0.12, -0.55);
-  g.add(fire);
-
-  animators.push((time) => {
-    fire.scale.y = 1 + Math.sin(time * 12) * 0.2;
-    fire.scale.x = 1 + Math.cos(time * 10) * 0.15;
-  });
-
-  return g;
+  return frameGroup;
 }
 
-function buildConstitutionExhibit(animators) {
-  const g = new THREE.Group();
-  
-  const marbleMat = new THREE.MeshStandardMaterial({ color: 0xfcfcfc, roughness: 0.15, metalness: 0.05 });
-  const stand = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.35, 0.7), marbleMat);
-  stand.position.y = 0.18;
-  g.add(stand);
-
-  const emblemMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.2, metalness: 0.9 });
-  const emblem = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.03, 32), emblemMat);
-  emblem.rotation.x = Math.PI / 2;
-  emblem.position.set(0, 0.18, 0.36);
-  g.add(emblem);
-
-  const lawMat = new THREE.MeshStandardMaterial({ color: 0x922b21, roughness: 0.5 });
-  const book1 = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.08, 0.32), lawMat);
-  book1.position.set(-0.28, 0.4, 0);
-  book1.rotation.y = 0.1;
-  g.add(book1);
-
-  const book2 = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.08, 0.32), lawMat);
-  book2.position.set(0.28, 0.4, 0);
-  book2.rotation.y = -0.1;
-  g.add(book2);
-
-  const pole = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.015, 0.015, 1.4, 12),
-    new THREE.MeshStandardMaterial({ color: 0xdddddd, metalness: 0.8 })
-  );
-  pole.position.set(0, 0.8, -0.28);
-  g.add(pole);
-
-  const flag = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.45, 0.3),
-    new THREE.MeshBasicMaterial({ color: 0xda251d, side: THREE.DoubleSide })
-  );
-  flag.position.set(0.23, 1.35, -0.28);
-  g.add(flag);
-
-  const star = new THREE.Mesh(
-    new THREE.CircleGeometry(0.06, 5),
-    new THREE.MeshBasicMaterial({ color: 0xffff00 })
-  );
-  star.position.set(0.23, 1.35, -0.27);
-  g.add(star);
-
-  animators.push((time) => {
-    flag.rotation.y = Math.sin(time * 3) * 0.15;
+// ── CỘT BARIE DÂY NHUNG ĐỎ BẢO VỆ (VELVET ROPE STANCHIONS) ────────
+function createVelvetBarrier(parent, goldMat) {
+  const barrierGroup = new THREE.Group();
+  const ropeMat = new THREE.MeshStandardMaterial({
+    color: 0x8a0b14, // Dây nhung đỏ sẫm
+    roughness: 0.6,
   });
 
-  return g;
+  const positions = [
+    [-1.05, 0, -0.95],
+    [1.05, 0, -0.95],
+    [1.05, 0, 0.95],
+    [-1.05, 0, 0.95]
+  ];
+
+  // 4 Cột đồng mạ vàng ở 4 góc
+  positions.forEach(pos => {
+    const colGroup = new THREE.Group();
+    colGroup.position.set(pos[0], 0, pos[2]);
+
+    // Đế cột
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.14, 0.04, 16), goldMat);
+    base.position.y = 0.02;
+    colGroup.add(base);
+
+    // Thân cột
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.9, 16), goldMat);
+    pole.position.y = 0.47;
+    pole.castShadow = true;
+    colGroup.add(pole);
+
+    // Quả cầu đỉnh cột
+    const ball = new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 16), goldMat);
+    ball.position.y = 0.94;
+    colGroup.add(ball);
+
+    barrierGroup.add(colGroup);
+  });
+
+  // 4 Dây nhung uốn cong tự nhiên nối các cột
+  const ropePairs = [
+    [[-1.05, 0.88, -0.95], [1.05, 0.88, -0.95]],
+    [[1.05, 0.88, -0.95], [1.05, 0.88, 0.95]],
+    [[1.05, 0.88, 0.95], [-1.05, 0.88, 0.95]],
+    [[-1.05, 0.88, 0.95], [-1.05, 0.88, -0.95]]
+  ];
+
+  ropePairs.forEach(([start, end]) => {
+    const mid = [
+      (start[0] + end[0]) / 2,
+      (start[1] + end[1]) / 2 - 0.16, // Trùng xuống tự nhiên
+      (start[2] + end[2]) / 2
+    ];
+    const curve = new THREE.QuadraticBezierCurve3(
+      new THREE.Vector3(...start),
+      new THREE.Vector3(...mid),
+      new THREE.Vector3(...end)
+    );
+    const tubeGeo = new THREE.TubeGeometry(curve, 16, 0.02, 8, false);
+    const ropeMesh = new THREE.Mesh(tubeGeo, ropeMat);
+    barrierGroup.add(ropeMesh);
+  });
+
+  parent.add(barrierGroup);
 }
 
-function buildSecurityShieldExhibit(animators) {
-  const g = new THREE.Group();
-  const titanMat = new THREE.MeshStandardMaterial({
-    color: 0x566573,
-    roughness: 0.25,
-    metalness: 0.85,
-  });
-
-  const shield = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.42, 0.85, 8), titanMat);
-  shield.scale.set(1.0, 1.1, 0.25);
-  shield.position.set(0, 0.65, 0);
-  g.add(shield);
-
-  const sMap = new THREE.Mesh(
-    new THREE.TorusGeometry(0.25, 0.02, 8, 32, Math.PI * 1.6),
-    new THREE.MeshBasicMaterial({ color: 0xf1c40f })
-  );
-  sMap.position.set(0, 0.65, 0.15);
-  g.add(sMap);
-
-  const radar = new THREE.Mesh(
-    new THREE.RingGeometry(0.7, 0.74, 32),
-    new THREE.MeshBasicMaterial({ color: 0x00d4ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6 })
-  );
-  radar.rotation.x = Math.PI / 2;
-  radar.position.y = 0.65;
-  g.add(radar);
-
-  const screen = new THREE.Mesh(
-    new THREE.BoxGeometry(0.65, 0.45, 0.05),
-    new THREE.MeshStandardMaterial({ color: 0x1a252f, roughness: 0.2 })
-  );
-  screen.position.set(0.7, 0.55, -0.15);
-  screen.rotation.y = -Math.PI / 6;
-  g.add(screen);
-
-  animators.push((time) => {
-    radar.rotation.z = time * 0.8;
-    radar.scale.setScalar(1 + Math.sin(time * 2) * 0.06);
-  });
-
-  return g;
-}
-
-// ── BẢNG TÊN HIỆN VẬT GẮN TRƯỚC BỤC (TRANG TRỌNG - CHỮ LA MÃ) ─
+// ── BẢNG TÊN HIỆN VẬT GẮN TRƯỚC BỤC (MUSEUM BRASS PLAQUE) ────────
 function createPedestalBadge(title, romanNumeral) {
   const canvas = document.createElement('canvas');
   canvas.width = 800;
@@ -709,13 +355,13 @@ function createPedestalBadge(title, romanNumeral) {
 
   // Số La Mã vàng ánh kim
   ctx.fillStyle = '#f1c40f';
-  ctx.font = 'bold 40px "Cinzel", "Times New Roman", serif';
+  ctx.font = 'bold 38px "Cinzel", "Times New Roman", serif';
   ctx.textAlign = 'center';
   ctx.fillText(`HIỆN VẬT ${romanNumeral}`, 400, 75);
 
   // Tên hiện vật trắng sáng sắc nét
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 30px "Montserrat", "Segoe UI", sans-serif';
+  ctx.font = 'bold 28px "Montserrat", "Segoe UI", sans-serif';
   ctx.fillText(title, 400, 150);
 
   // Chú thích hướng dẫn tương tác

@@ -14,12 +14,12 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15; // Cân bằng độ tương phản, ấm cúng và không chói
+renderer.toneMappingExposure = 1.1; // Cân bằng độ tương phản, ấm cúng và không chói
 
 const scene = new THREE.Scene();
-// Nền sảnh bảo tàng xám than tối sang trọng
-scene.background = new THREE.Color(0x131722);
-scene.fog = new THREE.Fog(0x131722, 28, 115);
+// Nền sảnh bảo tàng màu nâu than ấm sang trọng phong cách triển lãm
+scene.background = new THREE.Color(0x0c0806);
+scene.fog = new THREE.Fog(0x0c0806, 22, 95);
 
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 150);
 camera.position.set(0, 1.65, -4);
@@ -32,7 +32,7 @@ function onWindowResize() {
 window.addEventListener('resize', onWindowResize);
 
 // ── DỰNG KIẾN TRÚC BẢO TÀNG & 10 HIỆN VẬT ────────────────────
-buildMuseumHalls(scene);
+const { hallsGroup, sparklesAnimator } = buildMuseumHalls(scene);
 const { exhibitObjects, animators: exhibitAnimators } = createExhibitObjects(scene);
 
 // ── TẠO MŨI TÊN WAYPOINT 3D DƯỚI SÀN ──────────────────────────
@@ -68,18 +68,18 @@ const modalManager = new ModalManager(
 );
 
 // ── ĐÈN HIGHLIGHT TẬP TRUNG HIỆN VẬT ĐANG CHỌN (WARM GOLDEN SPOTLIGHT) ──
-const activeHighlightSpot = new THREE.SpotLight(0xffdf99, 4.8, 28, Math.PI / 4.2, 0.35, 1.2);
+const activeHighlightSpot = new THREE.SpotLight(0xffdf99, 5.0, 30, Math.PI / 4.0, 0.35, 1.2);
 activeHighlightSpot.position.set(0, 7.2, 4);
 activeHighlightSpot.castShadow = true;
 scene.add(activeHighlightSpot);
 
 const activeSpotTarget = new THREE.Object3D();
-activeSpotTarget.position.set(0, 1.0, 4);
+activeSpotTarget.position.set(0, 1.15, 4);
 scene.add(activeSpotTarget);
 activeHighlightSpot.target = activeSpotTarget;
 
 const targetSpotPos = new THREE.Vector3(0, 7.2, 4);
-const targetLookPos = new THREE.Vector3(0, 1.0, 4);
+const targetLookPos = new THREE.Vector3(0, 1.15, 4);
 
 // ── CAMERA CONTROLLER ─────────────────────────────────────────
 const cameraController = new CameraController(
@@ -95,7 +95,7 @@ const cameraController = new CameraController(
     currentActiveIndex = index;
     quickSelectEl.value = index;
     targetSpotPos.set(exhibit.position.x, 7.2, exhibit.position.z);
-    targetLookPos.set(exhibit.position.x, 0.9, exhibit.position.z);
+    targetLookPos.set(exhibit.position.x, 1.15, exhibit.position.z);
     if (currentExhibitBadgeEl) {
       currentExhibitBadgeEl.textContent = `Hiện vật ${exhibit.romanNumeral}/X: ${exhibit.title}`;
       currentExhibitBadgeEl.style.display = 'block';
@@ -119,7 +119,7 @@ function goToExhibit(index) {
   const ex = EXHIBITS_DATA[index];
   if (ex) {
     targetSpotPos.set(ex.position.x, 7.2, ex.position.z);
-    targetLookPos.set(ex.position.x, 0.9, ex.position.z);
+    targetLookPos.set(ex.position.x, 1.15, ex.position.z);
   }
   cameraController.approachExhibit(index);
 }
@@ -237,12 +237,14 @@ function animate() {
   const elapsed = clock.getElapsedTime();
 
   cameraController.update(dt);
+  if (sparklesAnimator) sparklesAnimator(elapsed);
   exhibitAnimators.forEach((anim) => anim(elapsed));
   waypointAnimators.forEach((anim) => anim(elapsed));
 
   // Di chuyển mượt mà chùm sáng spotlight nghệ thuật vào hiện vật đang chọn
   activeHighlightSpot.position.lerp(targetSpotPos, 0.08);
   activeSpotTarget.position.lerp(targetLookPos, 0.08);
+  activeHighlightSpot.intensity = 4.8 + Math.sin(elapsed * 2.2) * 0.35;
 
   renderer.render(scene, camera);
 }

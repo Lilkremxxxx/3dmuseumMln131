@@ -5,38 +5,38 @@ export function buildMuseumHalls(scene) {
   const hallsGroup = new THREE.Group();
   hallsGroup.name = "MuseumArchitecture";
 
-  // ── MATERIALS (DARK MODE SANG TRỌNG - ÁNH ĐÈN VÀNG BẢO TÀNG) ─────
+  // ── MATERIALS (PHONG CÁCH BẢO TÀNG HÀNH TRÌNH CỨU NƯỚC) ─────────
   const floorMat = new THREE.MeshStandardMaterial({
-    color: 0x1b202a, // Đá granite tối bóng cao cấp phản chiếu ánh vàng
-    roughness: 0.28,
-    metalness: 0.18,
+    color: 0x16100c, // Sàn gỗ gụ/đá sẫm phản chiếu ánh vàng lung linh
+    roughness: 0.32,
+    metalness: 0.22,
   });
 
   const wallMat = new THREE.MeshStandardMaterial({
-    color: 0x1e2430, // Tường thạch cao xám than sang trọng
+    color: 0x1d1510, // Tường triển lãm màu nâu xám ấm cổ điển
     roughness: 0.85,
     metalness: 0.04,
   });
 
   const trimMat = new THREE.MeshStandardMaterial({
-    color: 0xd4af37, // Viền mạ vàng hoàng gia
-    roughness: 0.25,
-    metalness: 0.85,
+    color: 0xd4af37, // Phào chỉ mạ vàng hoàng gia
+    roughness: 0.18,
+    metalness: 0.88,
   });
 
   const columnMat = new THREE.MeshStandardMaterial({
-    color: 0x252c3a, // Cột đá cẩm thạch đen xám viền vàng
-    roughness: 0.32,
+    color: 0x241a13, // Cột gỗ mun/đá sẫm sang trọng
+    roughness: 0.35,
     metalness: 0.18,
   });
 
   const ceilMat = new THREE.MeshStandardMaterial({
-    color: 0x12151c, // Trần tối cách âm nghệ thuật
+    color: 0x100a06, // Trần gỗ cách âm tối màu
     roughness: 0.95,
   });
 
   const glassCeilMat = new THREE.MeshStandardMaterial({
-    color: 0x24334a,
+    color: 0x1c120a,
     roughness: 0.15,
     metalness: 0.2,
     transparent: true,
@@ -258,8 +258,68 @@ export function buildMuseumHalls(scene) {
     hallsGroup.add(wallLightR);
   }
 
+  // 5. Hệ thống hạt bụi vàng lơ lửng phản chiếu ánh đèn (Golden Dust Sparkles)
+  const sparklesAnimator = createGoldenSparkles(hallsGroup);
+
   scene.add(hallsGroup);
-  return hallsGroup;
+  return { hallsGroup, sparklesAnimator };
+}
+
+function createGoldenSparkles(parent) {
+  const count = 480;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(count * 3);
+  const speeds = new Float32Array(count);
+  const phases = new Float32Array(count);
+
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 16.0;      // X: -8 đến 8
+    positions[i * 3 + 1] = 0.4 + Math.random() * 6.2;     // Y: 0.4 đến 6.6
+    positions[i * 3 + 2] = -8.0 + Math.random() * 116.0;  // Z dọc hành lang
+    speeds[i] = 0.2 + Math.random() * 0.35;
+    phases[i] = Math.random() * Math.PI * 2;
+  }
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  // Tạo texture đốm sáng vàng mịn với radial gradient
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(255, 245, 200, 1.0)');
+  grad.addColorStop(0.25, 'rgba(255, 215, 60, 0.85)');
+  grad.addColorStop(0.65, 'rgba(212, 175, 55, 0.25)');
+  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 64, 64);
+
+  const particleTexture = new THREE.CanvasTexture(canvas);
+  const particleMaterial = new THREE.PointsMaterial({
+    size: 0.2,
+    map: particleTexture,
+    transparent: true,
+    opacity: 0.82,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+
+  const particleMesh = new THREE.Points(geometry, particleMaterial);
+  particleMesh.name = "GoldenSparkles";
+  parent.add(particleMesh);
+
+  return function updateSparkles(elapsed) {
+    const pos = geometry.attributes.position.array;
+    for (let i = 0; i < count; i++) {
+      const idxY = i * 3 + 1;
+      const idxX = i * 3;
+      // Chuyển động nhấp nhô lững lờ nhẹ nhàng
+      pos[idxY] += Math.sin(elapsed * speeds[i] + phases[i]) * 0.0022;
+      pos[idxX] += Math.cos(elapsed * 0.6 * speeds[i] + phases[i]) * 0.0012;
+    }
+    geometry.attributes.position.needsUpdate = true;
+  };
 }
 
 function createWallBanner(parent, text, pos, rotY, accentColor = 0xc0392b) {

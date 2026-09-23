@@ -49,8 +49,8 @@ export const EXHIBITS_DATA = [
     subtitle: "Cội nguồn lịch sử và sức mạnh trường tồn của cộng đồng 54 dân tộc anh em",
     modelFile: "/models/exhibit_1.glb",
     position: { x: 0, y: 1.2, z: 4 },
-    cameraWaypoint: { x: 0, y: 1.65, z: 0.8 },
-    lookAt: { x: 0, y: 1.3, z: 4 },
+    cameraWaypoint: { x: 0, y: 1.65, z: -0.2 },
+    lookAt: { x: 0, y: 1.15, z: 4 },
     theme: "Khái niệm Dân tộc & Đặc trưng Dân tộc Việt Nam",
     theory: {
       chapterTopic: "Khái niệm, đặc trưng cơ bản của dân tộc và đặc điểm dân tộc Việt Nam (Giáo trình, trang 196 - 210)",
@@ -76,13 +76,13 @@ Là cộng đồng người được hình thành trong lịch sử, có mối l
     historicalImages: [
       {
         title: "Bảo vật Quốc gia: Trống đồng Đông Sơn",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Dong_Son_drum_-_Vietnam_National_Museum_of_History_-_Hanoi%2C_Vietnam_-_DSC05477.JPG/800px-Dong_Son_drum_-_Vietnam_National_Museum_of_History_-_Hanoi%2C_Vietnam_-_DSC05477.JPG",
+        imageUrl: "/images/exhibits/exhibit_1_1.jpg",
         caption: "Hiện vật gốc lưu giữ tại Bảo tàng Lịch sử Quốc gia (Hà Nội), biểu trưng cho đỉnh cao văn minh kim khí Đông Sơn của người Việt cổ.",
         tag: "Bảo tàng Lịch sử Quốc gia"
       },
       {
         title: "Bác Hồ tại Đền Hùng (19/9/1954)",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Ho_Chi_Minh_at_Den_Hung.jpg/640px-Ho_Chi_Minh_at_Den_Hung.jpg",
+        imageUrl: "/images/exhibits/exhibit_1_2.jpg",
         caption: "Bác Hồ căn dặn các chiến sĩ Đại đoàn Quân Tiên Phong: 'Các Vua Hùng đã có công dựng nước, Bác cháu ta phải cùng nhau giữ lấy nước'.",
         tag: "Tư liệu Lịch sử Cách mạng"
       }
@@ -105,8 +105,8 @@ Là cộng đồng người được hình thành trong lịch sử, có mối l
     subtitle: "Ba nguyên tắc vàng giải quyết vấn đề dân tộc của chủ nghĩa Mác - Lênin",
     modelFile: "/models/exhibit_2.glb",
     position: { x: -4.5, y: 1.3, z: 12 },
-    cameraWaypoint: { x: -4.5, y: 1.65, z: 9.0 },
-    lookAt: { x: -4.5, y: 1.4, z: 12 },
+    cameraWaypoint: { x: -4.5, y: 1.65, z: 7.8 },
+    lookAt: { x: -4.5, y: 1.15, z: 12 },
     theme: "Cương lĩnh Dân tộc của Chủ nghĩa Mác - Lênin",
     theory: {
       chapterTopic: "Cương lĩnh dân tộc của chủ nghĩa Mác - Lênin (Giáo trình, trang 203 - 207)",
@@ -134,13 +134,13 @@ Là cộng đồng người được hình thành trong lịch sử, có mối l
     historicalImages: [
       {
         title: "V.I. Lênin tại Đại hội II Quốc tế Cộng sản (1920)",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Lenin_in_1920.jpg/640px-Lenin_in_1920.jpg",
+        imageUrl: "/images/exhibits/exhibit_2_1.jpg",
         caption: "Nơi Lênin trình bày Luận cương về vấn đề dân tộc và thuộc địa - văn kiện đã soi rọi con đường cứu nước của đồng chí Nguyễn Ái Quốc.",
         tag: "Tư liệu Lịch sử Quốc tế"
       },
       {
         title: "V.I. Lênin diễn thuyết trước quần chúng công nhân (1919)",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Lenin_clapping.jpg/640px-Lenin_clapping.jpg",
+        imageUrl: "/images/exhibits/exhibit_2_2.jpg",
         caption: "Lênin khẳng định giai cấp vô sản toàn thế giới và các dân tộc bị áp bức phải đoàn kết chặt chẽ trong cuộc đấu tranh chống chủ nghĩa đế quốc.",
         tag: "Lưu trữ Quốc tế"
       }
@@ -163,8 +163,8 @@ Là cộng đồng người được hình thành trong lịch sử, có mối l
     subtitle: "Tư tưởng Hồ Chí Minh: 'Sông có thể cạn, núi có thể mòn, nhưng lòng đoàn kết của chúng ta không bao giờ giảm bớt'",
     modelFile: "/models/exhibit_3.glb",
     position: { x: 4.5, y: 1.4, z: 12 },
-    cameraWaypoint: { x: 4.5, y: 1.65, z: 9.0 },
-    lookAt: { x: 4.5, y: 1.4, z: 12 },
+    cameraWaypoint: { x: 4.5, y: 1.65, z: 7.8 },
+    lookAt: { x: 4.5, y: 1.15, z: 12 },
     theme: "Tư tưởng Hồ Chí Minh về Đại đoàn kết Dân tộc",
     theory: {
       chapterTopic: "Truyền thống đoàn kết và quan điểm của Đảng, Chủ tịch Hồ Chí Minh (Giáo trình, trang 209 - 211)",
@@ -186,13 +186,13 @@ Quan điểm nhất quán của Đảng ta:
     historicalImages: [
       {
         title: "Bác Hồ và đồng bào các dân tộc tại Chiến khu Việt Bắc",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Ho_Chi_Minh_1950s.jpg/800px-Ho_Chi_Minh_1950s.jpg",
+        imageUrl: "/images/exhibits/exhibit_3_1.jpg",
         caption: "Bác Hồ luôn gắn bó máu thịt với đồng bào các dân tộc thiểu số nơi căn cứ địa kháng chiến Việt Bắc trong những năm kháng chiến trường kỳ.",
         tag: "Bảo tàng Hồ Chí Minh"
       },
       {
         title: "Chủ tịch Hồ Chí Minh năm 1946",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Ho_Chi_Minh_1946.jpg/640px-Ho_Chi_Minh_1946.jpg",
+        imageUrl: "/images/exhibits/exhibit_3_2.jpg",
         caption: "Thời điểm Người viết bức thư lịch sử gửi Đại hội các dân tộc thiểu số miền Nam khẳng định tình đoàn kết anh em một nhà.",
         tag: "Tư liệu Lịch sử 1946"
       }
@@ -216,8 +216,8 @@ Quan điểm nhất quán của Đảng ta:
     subtitle: "Tín ngưỡng bản địa thuần Việt kết nối hàng triệu trái tim 'Uống nước nhớ nguồn'",
     modelFile: "/models/exhibit_4.glb",
     position: { x: -4.5, y: 1.3, z: 30 },
-    cameraWaypoint: { x: -4.5, y: 1.62, z: 25.4 },
-    lookAt: { x: -4.5, y: 1.05, z: 30 },
+    cameraWaypoint: { x: -4.5, y: 1.65, z: 25.8 },
+    lookAt: { x: -4.5, y: 1.15, z: 30 },
     theme: "Bản chất Tôn giáo & Tín ngưỡng Truyền thống Dân tộc",
     theory: {
       chapterTopic: "Bản chất, nguồn gốc tôn giáo và tín ngưỡng truyền thống (Giáo trình, trang 214 - 220, 229 - 231)",
@@ -268,8 +268,8 @@ Mối quan hệ với tín ngưỡng truyền thống ở Việt Nam:
     subtitle: "Phật giáo Việt Nam: Tinh thần 'Hộ quốc an dân' và phương châm 'Đạo pháp - Dân tộc - CNXH'",
     modelFile: "/models/exhibit_5.glb",
     position: { x: 4.5, y: 1.3, z: 30 },
-    cameraWaypoint: { x: 4.5, y: 1.62, z: 25.4 },
-    lookAt: { x: 4.5, y: 1.05, z: 30 },
+    cameraWaypoint: { x: 4.5, y: 1.65, z: 25.8 },
+    lookAt: { x: 4.5, y: 1.15, z: 30 },
     theme: "Tôn giáo Đồng hành cùng Lịch sử Dân tộc",
     theory: {
       chapterTopic: "Đặc điểm tôn giáo ở Việt Nam: Tôn giáo đồng hành cùng dân tộc (Giáo trình, trang 223 - 226, 229 - 232)",
@@ -320,8 +320,8 @@ Phật giáo Việt Nam:
     subtitle: "Công giáo Việt Nam: 'Kính Chúa yêu nước' và 'Sống Phúc âm giữa lòng dân tộc'",
     modelFile: "/models/exhibit_6.glb",
     position: { x: -4.5, y: 1.3, z: 44 },
-    cameraWaypoint: { x: -4.5, y: 1.62, z: 39.4 },
-    lookAt: { x: -4.5, y: 1.05, z: 44 },
+    cameraWaypoint: { x: -4.5, y: 1.65, z: 39.8 },
+    lookAt: { x: -4.5, y: 1.15, z: 44 },
     theme: "Công giáo Đồng hành cùng Dân tộc",
     theory: {
       chapterTopic: "Chính sách tôn giáo của Đảng và sự hòa nhập tôn giáo (Giáo trình, trang 224 - 227)",
@@ -372,8 +372,8 @@ Biểu tượng văn hóa của Nhà thờ đá Phát Diệm (Ninh Bình):
     subtitle: "Bức tranh tôn giáo phong phú, hòa hợp, không có xung đột của Tổ quốc Việt Nam",
     modelFile: "/models/exhibit_7.glb",
     position: { x: 4.5, y: 1.3, z: 44 },
-    cameraWaypoint: { x: 4.5, y: 1.62, z: 39.4 },
-    lookAt: { x: 4.5, y: 1.05, z: 44 },
+    cameraWaypoint: { x: 4.5, y: 1.65, z: 39.8 },
+    lookAt: { x: 4.5, y: 1.15, z: 44 },
     theme: "Sự Phong phú & Hòa hợp Tôn giáo ở Việt Nam",
     theory: {
       chapterTopic: "Việt Nam là quốc gia đa tôn giáo, chung sống hòa bình (Giáo trình, trang 223 - 225, 228 - 231)",
@@ -429,8 +429,8 @@ Gắn bó mật thiết với văn hóa bản địa phương Nam, hướng thi�
     subtitle: "Chính sách phát triển toàn diện KT-XH và bảo tồn Di sản văn hóa phi vật thể nhân loại",
     modelFile: "/models/exhibit_8.glb",
     position: { x: 0, y: 1.5, z: 65 },
-    cameraWaypoint: { x: 0, y: 1.62, z: 60.2 },
-    lookAt: { x: 0, y: 1.08, z: 65 },
+    cameraWaypoint: { x: 0, y: 1.65, z: 60.8 },
+    lookAt: { x: 0, y: 1.15, z: 65 },
     theme: "Chính sách Dân tộc Toàn diện của Đảng và Nhà nước",
     theory: {
       chapterTopic: "Nội dung chính sách dân tộc của Đảng và Nhà nước Việt Nam (Giáo trình, trang 211 - 213)",
@@ -484,8 +484,8 @@ Bảo tồn Không gian văn hóa Cồng chiêng Tây Nguyên:
     subtitle: "Cơ sở pháp lý tối cao bảo đảm quyền tự do tín ngưỡng, tôn giáo và quyền bình đẳng giữa các dân tộc",
     modelFile: "/models/exhibit_9.glb",
     position: { x: -4.5, y: 1.4, z: 92 },
-    cameraWaypoint: { x: -4.5, y: 1.62, z: 87.4 },
-    lookAt: { x: -4.5, y: 1.05, z: 92 },
+    cameraWaypoint: { x: -4.5, y: 1.65, z: 87.8 },
+    lookAt: { x: -4.5, y: 1.15, z: 92 },
     theme: "Thể chế Pháp quyền XHCN về Dân tộc & Tôn giáo",
     theory: {
       chapterTopic: "Pháp chế hóa chính sách dân tộc, tôn giáo của Đảng và Nhà nước (Giáo trình, trang 211, 226 - 227)",
@@ -538,8 +538,8 @@ Bảo tồn Không gian văn hóa Cồng chiêng Tây Nguyên:
     subtitle: "Vạch trần âm mưu chia rẽ, bảo vệ vững chắc độc lập chủ quyền và khối đại đoàn kết toàn dân tộc",
     modelFile: "/models/exhibit_10.glb",
     position: { x: 4.5, y: 1.4, z: 92 },
-    cameraWaypoint: { x: 4.5, y: 1.62, z: 87.4 },
-    lookAt: { x: 4.5, y: 1.05, z: 92 },
+    cameraWaypoint: { x: 4.5, y: 1.65, z: 87.8 },
+    lookAt: { x: 4.5, y: 1.15, z: 92 },
     theme: "Đấu tranh Ngăn chặn Lợi dụng Dân tộc & Tôn giáo",
     theory: {
       chapterTopic: "Đấu tranh chống các thế lực thù địch lợi dụng vấn đề dân tộc, tôn giáo (Giáo trình, trang 203, 226, 233 - 236)",
