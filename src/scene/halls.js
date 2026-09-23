@@ -185,6 +185,7 @@ export function buildMuseumHalls(scene) {
         new THREE.MeshBasicMaterial({ map: bannerTex })
       );
       bannerMesh.position.set(0, HEIGHT - 0.6, archZ - 0.42);
+      bannerMesh.rotation.y = Math.PI;
       hallsGroup.add(bannerMesh);
     }
   });

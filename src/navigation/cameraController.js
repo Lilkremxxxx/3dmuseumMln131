@@ -81,7 +81,7 @@ export class CameraController {
       if (this.mode === 'INSPECTING' && this.currentExhibitIndex >= 0) {
         // Xoay quanh vật thể
         const ex = EXHIBITS_DATA[this.currentExhibitIndex];
-        const center = new THREE.Vector3(ex.position.x, ex.position.y, ex.position.z);
+        const center = new THREE.Vector3(ex.position.x, 1.65, ex.position.z);
         const offset = this.camera.position.clone().sub(center);
         const radius = Math.sqrt(offset.x * offset.x + offset.z * offset.z);
         let angle = Math.atan2(offset.x, offset.z);
@@ -145,10 +145,10 @@ export class CameraController {
     if (index < 0 || index >= EXHIBITS_DATA.length) return;
     this.currentExhibitIndex = index;
     const ex = EXHIBITS_DATA[index];
-    const center = new THREE.Vector3(ex.position.x, ex.position.y, ex.position.z);
+    const center = new THREE.Vector3(ex.position.x, 1.65, ex.position.z);
     
-    // Đặt camera ở khoảng cách 1.8m nhìn thẳng vào vật thể
-    const inspectPos = center.clone().add(new THREE.Vector3(0, 0.4, -1.8));
+    // Đặt camera ở khoảng cách 2.4m nhìn thẳng vào mặt tranh
+    const inspectPos = center.clone().add(new THREE.Vector3(0, 0.05, -2.4));
     this.startTransition(inspectPos, this.camera.position.clone(), center, 900, () => {
       this.mode = 'INSPECTING';
     });

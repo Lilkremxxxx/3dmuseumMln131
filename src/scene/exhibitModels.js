@@ -108,7 +108,7 @@ export function createExhibitObjects(scene) {
     // ── 4. BIỂN TÊN HIỆN VẬT GẮN TRƯỚC BỤC (BRASS BADGE) ──────────
     const badgeMesh = createPedestalBadge(data.title, data.romanNumeral);
     badgeMesh.position.set(0, 0.62, -0.88);
-    badgeMesh.rotation.set(-0.24, Math.PI, 0); // Nghiêng 14 độ ngửa lên hướng tầm mắt
+    badgeMesh.rotation.set(0.24, Math.PI, 0); // Nghiêng 14 độ ngửa lên hướng tầm mắt người xem
     pedGroup.add(badgeMesh);
 
     // ── 5. SPOTLIGHT VÀNG ẤM RỌI HIỆN VẬT TỪ TRẦN CAO ────────────
@@ -204,7 +204,8 @@ function buildArtDisplayFrame(data, textureLoader, goldMat, animators) {
   const canvasMat = new THREE.MeshStandardMaterial({
     map: texture,
     roughness: 0.65,
-    metalness: 0.05
+    metalness: 0.05,
+    side: THREE.DoubleSide
   });
   const canvasMesh = new THREE.Mesh(new THREE.PlaneGeometry(W, H), canvasMat);
   canvasMesh.position.set(0, 0, 0.035);
@@ -250,13 +251,13 @@ function buildArtDisplayFrame(data, textureLoader, goldMat, animators) {
 
   // 6. Chân giá đỡ gỗ nghiêng phía sau (Easel Back Support)
   const easelLeg = new THREE.Mesh(new THREE.BoxGeometry(0.08, H + 0.35, 0.04), woodMat);
-  easelLeg.position.set(0, -0.08, -0.22);
+  easelLeg.position.set(0, 0.0, -0.22);
   easelLeg.rotation.x = Math.PI / 7.5;
   frameGroup.add(easelLeg);
 
-  // Khung tranh nghiêng góc 18° nghệ thuật trên mặt bục
-  frameGroup.rotation.x = -Math.PI / 10;
-  frameGroup.position.set(0, H / 2 + 0.08, 0.1);
+  // Khung tranh hướng về phía người xem (-Z) và nghiêng góc 15° nghệ thuật ngửa lên
+  frameGroup.rotation.set(Math.PI / 12, Math.PI, 0);
+  frameGroup.position.set(0, H / 2 + 0.08, 0.0);
 
   // Nhịp thở ánh sáng đèn rọi tranh
   if (animators) {
