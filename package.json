@@ -1,11 +1,11 @@
 {
-  "name": "virtual-museum-3d-mln131",
+  "name": "virtual-museum-2d-mln131",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cd 3d_mln131 && npm run dev",
-    "build": "cd 3d_mln131 && npm install && npm run build",
-    "preview": "cd 3d_mln131 && npm run preview"
+    "dev": "cd 2d_mln131 && npm run dev",
+    "build": "cd 2d_mln131 && npm install && npm run build",
+    "preview": "cd 2d_mln131 && npm run preview"
   }
 }
