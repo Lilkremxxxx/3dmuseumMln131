@@ -1,55 +1,86 @@
-# Bảo tàng Ảo 3D: Vấn đề Dân tộc và Tôn giáo trong Thời kỳ Quá độ lên Chủ nghĩa Xã hội
-**Chủ đề:** Giáo trình Chủ nghĩa xã hội khoa học — Chương 6  
-**Đơn vị:** Đại học FPT  
-**Công nghệ:** Three.js, WebGL, Vite 5, JavaScript ES Modules
+# Dự Án Triển Lãm & Bảo Tàng Số: Chương 6 - Chủ Nghĩa Xã Hội Khoa Học (MLN131)
+**Học phần:** Chủ nghĩa xã hội khoa học (MLN131) — Đại học FPT  
+**Chuyên đề nghiên cứu:** *Chương 6: Vấn đề dân tộc và tôn giáo trong thời kỳ quá độ lên chủ nghĩa xã hội*  
+**Tài liệu thuyết minh:** [`Thuyet_Minh_Bao_Tang_3D_MLN131.docx`](./Thuyet_Minh_Bao_Tang_3D_MLN131.docx)
 
 ---
 
-## Giới thiệu Dự án
+## 🏛️ Cấu Trúc Dự Án (Repository Architecture)
 
-Bảo tàng ảo 3D tương tác đa phương tiện tái hiện không gian triển lãm sống động phục vụ nghiên cứu, học tập và trực quan hóa nội dung **Chương 6: Vấn đề dân tộc và tôn giáo trong thời kỳ quá độ lên chủ nghĩa xã hội** (theo Giáo trình Chủ nghĩa xã hội khoa học chuẩn).
+Hệ thống được tổ chức thành 2 phân hệ độc lập, cùng cấp phục vụ trải nghiệm đa nền tảng:
 
-Dự án gồm **4 Sảnh triển lãm kiến trúc trang nghiêm** và **10 Hiện vật 3D tương tác độc bản**:
-1. **Trống đồng Đông Sơn & Quả cầu 54 Dân tộc** (Cội nguồn & Sức mạnh đại đoàn kết toàn dân tộc).
-2. **Bục sách Cương lĩnh Dân tộc của V.I. Lênin (1913 - 1914)** (Nền tảng lý luận Mác - Lênin về dân tộc).
-3. **Tượng Bác Hồ với đồng bào các DTTS & Bức thư Pleiku 1946** (Tư tưởng Hồ Chí Minh về đại đoàn kết dân tộc).
-4. **Không gian Tín ngưỡng Thờ cúng Hùng Vương & Bàn thờ Tổ tiên** (Bản sắc tâm linh thuần Việt, cội nguồn đại đoàn kết).
-5. **Mô hình Chùa Một Cột & Tượng Phật hoàng Trần Nhân Tông** (Phật giáo "Hộ quốc an dân", "Đạo pháp - Dân tộc - CNXH").
-6. **Chuông đồng & Thánh giá Nhà thờ Phát Diệm** (Công giáo "Kính Chúa yêu nước", "Sống Phúc âm giữa lòng dân tộc").
-7. **Cụm Đa tôn giáo: Thiên Nhãn Cao Đài & Vòm Hồi giáo Chăm** (Bức tranh tôn giáo đa dạng, hòa hợp ở Việt Nam).
-8. **Mô hình Nhà rông Tây Nguyên & Dàn Cồng chiêng Di sản** (Chính sách phát triển toàn diện KT-XH vùng đồng bào DTTS).
-9. **Bản khắc Hiến pháp 2013 & Luật Tín ngưỡng, Tôn giáo 2016** (Cơ sở pháp quyền XHCN bảo đảm quyền tự do tín ngưỡng).
-10. **Trận tuyến "Lá chắn thép" chống "Diễn biến hòa bình"** (Đấu tranh phòng, chống âm mưu lợi dụng vấn đề dân tộc, tôn giáo).
-
----
-
-## Tính năng Nổi bật (Đã cải tiến từ repo tham khảo)
-
-- **Mũi tên Waypoint 3D dưới sàn**: Dưới chân mỗi hiện vật có vòng tròn phát sáng và mũi tên 3D nhấp nhô. Click vào mũi tên dưới sàn là camera tự động bước đến trước mặt hiện vật.
-- **Chuyển động Camera Lerp mượt mà (Smooth Approach Transition)**: Tự động tính toán quỹ đạo, lướt êm dịu đến cự ly quan sát tối ưu (ngang tầm mắt 1.65m, cách hiện vật ~2m) và xoay hướng nhìn vào tâm vật thể.
-- **Bộ nút mũi tên điều hướng UI**: `[ Trước ]` và `[ Tiếp theo ]` trên thanh điều khiển dưới màn hình cho phép người dùng chuyển nhanh qua từng hiện vật theo thứ tự.
-- **Menu chọn nhanh 10 hiện vật**: Nhảy tức thì đến hiện vật bất kỳ.
-- **Chế độ ngắm 360° (Inspect Mode)**: Kéo chuột xoay tròn xung quanh đồ vật 3D để chiêm ngưỡng mọi góc cạnh.
-- **Modal Chi tiết Đa phương tiện 4 Tab**:
-  - Tab 1: **Nội dung lý luận** (Nội dung giáo trình đối chiếu chuẩn trang, luận điểm cốt lõi, trích dẫn văn kiện).
-  - Tab 2: **Mô hình 3D** (Mô tả hình khối, cấu trúc, chất liệu PBR, thông số kỹ thuật).
-  - Tab 3: **Tranh ảnh tư liệu** (Bộ ảnh lịch sử và chú thích chi tiết).
-  - Tab 4: **Phim tư liệu & Phóng sự** (Tư liệu lịch sử và phóng sự chính luận).
-- **Chế độ Tour Tự động (Auto Tour)**: Tự động dẫn khách tham quan lần lượt qua 10 hiện vật (mỗi hiện vật dừng 9 giây).
+```
+MLN131/
+├── 3d_mln131/                         # Phân hệ Bảo tàng Ảo 3D Không gian tương tác
+│   ├── src/                           # Three.js, WebGL scene, Camera controller, UI
+│   ├── public/                        # Tư liệu ảnh lịch sử, textures, models
+│   ├── scripts/                       # Script tạo mô hình và xuất bản tài liệu docx
+│   ├── Thuyet_Minh_Bao_Tang_3D_MLN131.docx # Bản thuyết minh chi tiết cho giảng viên
+│   ├── package.json
+│   └── vite.config.js
+│
+├── 2d_mln131/                         # Phân hệ Triển lãm Trực tuyến 2D Hiện đại
+│   ├── src/                           # React, Tailwind CSS, components bản đồ & trắc nghiệm
+│   ├── public/                        # Tài nguyên hình ảnh, biểu tượng
+│   ├── package.json
+│   └── vite.config.js
+│
+├── Thuyet_Minh_Bao_Tang_3D_MLN131.docx # Tài liệu thuyết trình và chấm điểm học phần (DOCX)
+├── MLN131 - Giao trinh CNXHKH.pdf     # Giáo trình chuẩn Bộ GD&ĐT (đối chiếu nội dung)
+└── AI_AGENT_TUTOR.md                  # Hướng dẫn và quy chuẩn học tập
+```
 
 ---
 
-## 💻 Hướng dẫn Chạy ứng dụng
+## 1. Phân hệ Bảo tàng Ảo 3D (`3d_mln131`)
 
-1. Mở terminal tại thư mục này:
+- **Công nghệ**: Three.js, WebGL, Vite 5, JavaScript ES Modules, Canvas 2D Texturing.
+- **Không gian kiến trúc**: 4 Sảnh lớn theo trục thẳng đứng, ánh sáng Dark Mode bảo tàng sang trọng với vòm mái Gothic & Baroque cách điệu, bệ đỡ đá hoa cương đen viền vàng, hiệu ứng ánh sáng hội tụ (Spotlight), hạt bụi ánh sáng vàng (Golden Sparkles) và Vignette điện ảnh.
+- **Hệ thống 10 Hiện vật 3D**:
+  1. *Trống đồng Đông Sơn & Quả cầu 54 Dân tộc* (Sảnh I - Dân tộc)
+  2. *Bục sách Cương lĩnh Dân tộc của V.I. Lênin* (Sảnh I)
+  3. *Tượng Bác Hồ với đồng bào DTTS & Thư Pleiku 1946* (Sảnh I)
+  4. *Không gian Tín ngưỡng Thờ cúng Hùng Vương* (Sảnh II - Tôn giáo)
+  5. *Mô hình Chùa Một Cột & Tượng Phật hoàng Trần Nhân Tông* (Sảnh II)
+  6. *Chuông đồng & Thánh giá Nhà thờ Phát Diệm* (Sảnh II)
+  7. *Cụm Đa tôn giáo: Thiên Nhãn Cao Đài & Vòm Hồi giáo Chăm* (Sảnh II)
+  8. *Mô hình Nhà rông Tây Nguyên & Dàn Cồng chiêng Di sản* (Sảnh III - Quan hệ DT & TG)
+  9. *Bản khắc Hiến pháp 2013 & Luật Tín ngưỡng, Tôn giáo 2016* (Sảnh III)
+  10. *Trận tuyến "Lá chắn thép" chống "Diễn biến hòa bình"* (Sảnh IV - Tổng kết)
+- **Tương tác**: Di chuyển tự do WASD/mũi tên, bấm waypoint sàn để tiếp cận mượt mà, chế độ xoay 360° kiểm tra chi tiết, bảng thuyết minh tư liệu song song hình ảnh có thật.
+
+### Hướng dẫn chạy 3D:
 ```bash
+cd 3d_mln131
+npm install
 npm run dev
 ```
 
-2. Truy cập đường link xuất hiện trong terminal (thường là `http://localhost:3000`).
+---
 
-3. Để build bản release chạy offline:
+## 2. Phân hệ Triển lãm Số 2D (`2d_mln131`)
+
+- **Công nghệ**: React 18, Tailwind CSS, Lucide Icons, Canvas Visuals.
+- **Nội dung & Tính năng**:
+  - Dòng thời gian cuộn điện ảnh (Cinematic Auto-Scroll).
+  - Bản đồ tương tác phân bố 54 dân tộc và các vùng tôn giáo trọng điểm tại Việt Nam.
+  - Thư viện tư liệu ảnh lưu trữ độ phân giải cao kèm trích dẫn văn kiện.
+  - Module trắc nghiệm kiến thức củng cố nội dung Chương 6.
+
+### Hướng dẫn chạy 2D:
 ```bash
-npm run build
-npm run preview
+cd 2d_mln131
+npm install
+npm run dev
 ```
+
+---
+
+## 3. Bản Thuyết Minh Dự Án (DOCX)
+
+File [`Thuyet_Minh_Bao_Tang_3D_MLN131.docx`](./Thuyet_Minh_Bao_Tang_3D_MLN131.docx) được biên soạn chuẩn học thuật theo khung chương trình Đại học FPT gồm 5 phần:
+- **Phần I**: Cơ sở lý luận khoa học bám sát Giáo trình CNXHKH Chương 6 (Trang 195–238).
+- **Phần II**: Ý tưởng thiết kế không gian kiến trúc và giải pháp công nghệ WebGL.
+- **Phần III**: Hồ sơ chi tiết 10 hiện vật trưng bày (Lý luận, hàm ý sư phạm, tư liệu ảnh thật).
+- **Phần IV**: Kịch bản thuyết trình từng bước (Tour Guide Script) đồng bộ chuyển động camera.
+- **Phần V**: Bộ câu hỏi phản biện & định hướng trả lời dành cho Hội đồng giảng viên.

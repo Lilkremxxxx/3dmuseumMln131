@@ -111,15 +111,15 @@ export function createWaypoints(scene, onWaypointClick) {
 
 function createFloatingLabel(text) {
   const canvas = document.createElement('canvas');
-  canvas.width = 640;
-  canvas.height = 120;
+  canvas.width = 800;
+  canvas.height = 130;
   const ctx = canvas.getContext('2d');
 
   ctx.fillStyle = 'rgba(20, 15, 12, 0.92)';
   if (ctx.roundRect) {
-    ctx.roundRect(10, 10, 620, 100, 20);
+    ctx.roundRect(10, 10, 780, 110, 20);
   } else {
-    ctx.fillRect(10, 10, 620, 100);
+    ctx.fillRect(10, 10, 780, 110);
   }
   ctx.fill();
 
@@ -127,15 +127,23 @@ function createFloatingLabel(text) {
   ctx.lineWidth = 4;
   ctx.stroke();
 
+  // Tự động co giãn cỡ chữ để đảm bảo text không bao giờ tràn ra ngoài ô
+  let fontSize = 23;
+  ctx.font = `bold ${fontSize}px "Montserrat", "Segoe UI", sans-serif`;
+  while (ctx.measureText(text).width > 720 && fontSize > 14) {
+    fontSize -= 1;
+    ctx.font = `bold ${fontSize}px "Montserrat", "Segoe UI", sans-serif`;
+  }
+
   ctx.fillStyle = '#f5d77f';
-  ctx.font = 'bold 22px "Montserrat", "Segoe UI", sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, 320, 60);
+  ctx.fillText(text, 400, 65);
 
   const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 8;
   const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
   const sprite = new THREE.Sprite(spriteMat);
-  sprite.scale.set(2.4, 0.45, 1);
+  sprite.scale.set(2.8, 0.455, 1);
   return sprite;
 }

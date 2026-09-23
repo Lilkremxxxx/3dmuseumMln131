@@ -163,38 +163,62 @@ export function buildMuseumHalls(scene) {
       archTop.position.set(0, HEIGHT - 0.6, archZ);
       hallsGroup.add(archTop);
 
-      // Biển tên sảnh
+      // Biển tên sảnh trên vòm cổng (Format 2 tầng cân đối, chống tràn chữ)
       const bannerCanvas = document.createElement('canvas');
-      bannerCanvas.width = 1024;
-      bannerCanvas.height = 160;
+      bannerCanvas.width = 1600;
+      bannerCanvas.height = 240;
       const ctx = bannerCanvas.getContext('2d');
-      ctx.fillStyle = '#1a222e';
-      ctx.fillRect(0, 0, 1024, 160);
+      ctx.fillStyle = '#141822';
+      ctx.fillRect(0, 0, 1600, 240);
       ctx.strokeStyle = '#d4af37';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(10, 10, 1004, 140);
+      ctx.lineWidth = 8;
+      ctx.strokeRect(12, 12, 1576, 216);
+
+      // Viền phụ trang trọng bên trong
+      ctx.strokeStyle = '#8a1b24';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(22, 22, 1556, 196);
+
+      // Tách đầu mục Sảnh (ví dụ: "Sảnh II") và chủ đề sảnh
+      const parts = hall.name.split(':');
+      const hallPrefix = parts[0].trim().toUpperCase();
+      const hallTopic = (parts[1] || '').trim().toUpperCase();
+
+      // Dòng 1: Tên đầu mục Sảnh (SẢNH II / SẢNH III / SẢNH IV)
       ctx.fillStyle = '#f1c40f';
-      ctx.font = 'bold 44px "Segoe UI", serif';
+      ctx.font = 'bold 36px "Cinzel", "Times New Roman", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(hall.name.toUpperCase(), 512, 80);
+      ctx.fillText(hallPrefix, 800, 70);
+
+      // Dòng 2: Nội dung chủ đề sảnh với thuật toán tự động co giãn font chống tràn
+      let topicFontSize = 32;
+      ctx.font = `600 ${topicFontSize}px "Montserrat", "Segoe UI", sans-serif`;
+      while (ctx.measureText(hallTopic).width > 1460 && topicFontSize > 18) {
+        topicFontSize -= 1;
+        ctx.font = `600 ${topicFontSize}px "Montserrat", "Segoe UI", sans-serif`;
+      }
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(hallTopic, 800, 145);
 
       const bannerTex = new THREE.CanvasTexture(bannerCanvas);
+      bannerTex.anisotropy = 8;
       const bannerMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(8, 1.2),
+        new THREE.PlaneGeometry(9.6, 1.44),
         new THREE.MeshBasicMaterial({ map: bannerTex })
       );
-      bannerMesh.position.set(0, HEIGHT - 0.6, archZ - 0.42);
+      bannerMesh.position.set(0, HEIGHT - 0.72, archZ - 0.42);
       bannerMesh.rotation.y = Math.PI;
       hallsGroup.add(bannerMesh);
     }
   });
 
   // ── KHẨU HIỆU & VĂN KIỆN LỚN TRÊN TƯỜNG (TRANH KHẮC CHỮ SANG TRỌNG) ──
+  // Đặt ở vị trí trung tâm giữa các cột (cột ở z = 0, 12, 24, 36, 48, 60, 72, 84, 96) để không bị che khuất
   createWallBanner(
     hallsGroup,
     "ĐOÀN KẾT, ĐOÀN KẾT, ĐẠI ĐOÀN KẾT\nTHÀNH CÔNG, THÀNH CÔNG, ĐẠI THÀNH CÔNG\n— CHỦ TỊCH HỒ CHÍ MINH —",
-    { x: -WIDTH / 2 + 0.05, y: 4.8, z: 6 },
+    { x: -WIDTH / 2 + 0.05, y: 4.8, z: 6 }, // Giữa cột 0 và 12
     Math.PI / 2,
     0xc0392b
   );
@@ -202,7 +226,7 @@ export function buildMuseumHalls(scene) {
   createWallBanner(
     hallsGroup,
     "CÁC DÂN TỘC HOÀN TOÀN BÌNH ĐẲNG\nCÁC DÂN TỘC ĐƯỢC QUYỀN TỰ QUYẾT\nLIÊN HIỆP CÔNG NHÂN TẤT CẢ CÁC DÂN TỘC LẠI\n— V.I. LÊNIN (1913 - 1914) —",
-    { x: WIDTH / 2 - 0.05, y: 4.8, z: 12 },
+    { x: WIDTH / 2 - 0.05, y: 4.8, z: 18 }, // Giữa cột 12 và 24 (trước đây ở z=12 bị cột che)
     -Math.PI / 2,
     0xc0392b
   );
@@ -210,7 +234,7 @@ export function buildMuseumHalls(scene) {
   createWallBanner(
     hallsGroup,
     "ĐẠO PHÁP — DÂN TỘC — CHỦ NGHĨA XÃ HỘI\nSỐNG PHÚC ÂM GIỮA LÒNG DÂN TỘC\nĐỂ PHỤC VỤ HẠNH PHÚC CỦA ĐỒNG BÀO",
-    { x: -WIDTH / 2 + 0.05, y: 4.8, z: 36 },
+    { x: -WIDTH / 2 + 0.05, y: 4.8, z: 42 }, // Giữa cột 36 và 48 (trước đây ở z=36 bị cột che)
     Math.PI / 2,
     0x2980b9
   );
@@ -218,7 +242,7 @@ export function buildMuseumHalls(scene) {
   createWallBanner(
     hallsGroup,
     "ĐIỀU 5 HIẾN PHÁP NĂM 2013:\nCÁC DÂN TỘC BÌNH ĐẲNG, ĐOÀN KẾT, TÔN TRỌNG\nVÀ GIÚP NHAU CÙNG PHÁT TRIỂN;\nNGHIÊM CẤM MỌI HÀNH VI KỲ THỊ, CHIA RẼ DÂN TỘC",
-    { x: WIDTH / 2 - 0.05, y: 4.8, z: 88 },
+    { x: WIDTH / 2 - 0.05, y: 4.8, z: 90 }, // Giữa cột 84 và 96 (trước đây ở z=88 sát cột)
     -Math.PI / 2,
     0x27ae60
   );
@@ -325,36 +349,46 @@ function createGoldenSparkles(parent) {
 
 function createWallBanner(parent, text, pos, rotY, accentColor = 0xc0392b) {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 360;
+  canvas.width = 1400;
+  canvas.height = 420;
   const ctx = canvas.getContext('2d');
 
   // Khung biển nền đen đá cẩm thạch sang trọng
   ctx.fillStyle = '#141822';
-  ctx.fillRect(0, 0, 1024, 360);
+  ctx.fillRect(0, 0, 1400, 420);
   ctx.strokeStyle = '#d4af37';
-  ctx.lineWidth = 8;
-  ctx.strokeRect(10, 10, 1004, 340);
+  ctx.lineWidth = 10;
+  ctx.strokeRect(12, 12, 1376, 396);
 
   ctx.strokeStyle = `#${accentColor.toString(16).padStart(6, '0')}`;
-  ctx.lineWidth = 3;
-  ctx.strokeRect(20, 20, 984, 320);
+  ctx.lineWidth = 4;
+  ctx.strokeRect(24, 24, 1352, 372);
 
-  // Chữ vàng kim nổi bật trên nền tối
+  // Chữ vàng kim nổi bật trên nền tối với thuật toán co giãn font tự động
   ctx.fillStyle = '#f5d77f';
-  ctx.font = 'bold 34px "Segoe UI", serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
   const lines = text.split('\n');
-  const startY = 180 - ((lines.length - 1) * 50) / 2;
+  let fontSize = 34;
+  ctx.font = `bold ${fontSize}px "Segoe UI", serif`;
+  for (const line of lines) {
+    while (ctx.measureText(line).width > 1280 && fontSize > 20) {
+      fontSize -= 1;
+      ctx.font = `bold ${fontSize}px "Segoe UI", serif`;
+    }
+  }
+
+  const lineHeight = fontSize + 18;
+  const startY = 210 - ((lines.length - 1) * lineHeight) / 2;
   lines.forEach((line, i) => {
-    ctx.fillText(line, 512, startY + i * 50);
+    ctx.fillText(line, 700, startY + i * lineHeight);
   });
 
   const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 8;
   const banner = new THREE.Mesh(
-    new THREE.PlaneGeometry(6.4, 2.3),
+    new THREE.PlaneGeometry(6.2, 2.1),
     new THREE.MeshBasicMaterial({ map: texture })
   );
   banner.position.set(pos.x, pos.y, pos.z);
