@@ -8,6 +8,7 @@ export default defineConfig({
     open: false
   },
   build: {
+    target: 'esnext',
     outDir: 'dist'
   }
 });

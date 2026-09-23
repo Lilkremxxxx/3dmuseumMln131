@@ -129,10 +129,10 @@ function createFloatingLabel(text) {
 
   // Tự động co giãn cỡ chữ để đảm bảo text không bao giờ tràn ra ngoài ô
   let fontSize = 23;
-  ctx.font = `bold ${fontSize}px "Montserrat", "Segoe UI", sans-serif`;
+  ctx.font = `700 ${fontSize}px "Be Vietnam Pro", "Montserrat", "Segoe UI", sans-serif`;
   while (ctx.measureText(text).width > 720 && fontSize > 14) {
     fontSize -= 1;
-    ctx.font = `bold ${fontSize}px "Montserrat", "Segoe UI", sans-serif`;
+    ctx.font = `700 ${fontSize}px "Be Vietnam Pro", "Montserrat", "Segoe UI", sans-serif`;
   }
 
   ctx.fillStyle = '#f5d77f';

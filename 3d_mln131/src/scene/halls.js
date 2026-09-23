@@ -186,17 +186,17 @@ export function buildMuseumHalls(scene) {
 
       // Dòng 1: Tên đầu mục Sảnh (SẢNH II / SẢNH III / SẢNH IV)
       ctx.fillStyle = '#f1c40f';
-      ctx.font = 'bold 36px "Cinzel", "Times New Roman", serif';
+      ctx.font = '700 36px "Playfair Display", "Times New Roman", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(hallPrefix, 800, 70);
 
       // Dòng 2: Nội dung chủ đề sảnh với thuật toán tự động co giãn font chống tràn
       let topicFontSize = 32;
-      ctx.font = `600 ${topicFontSize}px "Montserrat", "Segoe UI", sans-serif`;
+      ctx.font = `600 ${topicFontSize}px "Be Vietnam Pro", "Montserrat", "Segoe UI", sans-serif`;
       while (ctx.measureText(hallTopic).width > 1460 && topicFontSize > 18) {
         topicFontSize -= 1;
-        ctx.font = `600 ${topicFontSize}px "Montserrat", "Segoe UI", sans-serif`;
+        ctx.font = `600 ${topicFontSize}px "Be Vietnam Pro", "Montserrat", "Segoe UI", sans-serif`;
       }
       ctx.fillStyle = '#ffffff';
       ctx.fillText(hallTopic, 800, 145);
@@ -371,11 +371,11 @@ function createWallBanner(parent, text, pos, rotY, accentColor = 0xc0392b) {
 
   const lines = text.split('\n');
   let fontSize = 34;
-  ctx.font = `bold ${fontSize}px "Segoe UI", serif`;
+  ctx.font = `700 ${fontSize}px "Playfair Display", "Merriweather", "Times New Roman", serif`;
   for (const line of lines) {
     while (ctx.measureText(line).width > 1280 && fontSize > 20) {
       fontSize -= 1;
-      ctx.font = `bold ${fontSize}px "Segoe UI", serif`;
+      ctx.font = `700 ${fontSize}px "Playfair Display", "Merriweather", "Times New Roman", serif`;
     }
   }
 

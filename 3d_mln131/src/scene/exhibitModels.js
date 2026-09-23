@@ -331,18 +331,23 @@ function createPedestalBadge(title, romanNumeral) {
 
   // Số La Mã vàng ánh kim
   ctx.fillStyle = '#f1c40f';
-  ctx.font = 'bold 38px "Cinzel", "Times New Roman", serif';
+  ctx.font = '700 36px "Playfair Display", "Times New Roman", serif';
   ctx.textAlign = 'center';
   ctx.fillText(`HIỆN VẬT ${romanNumeral}`, 400, 75);
 
-  // Tên hiện vật trắng sáng sắc nét
+  // Tên hiện vật trắng sáng sắc nét với thuật toán co giãn font chống tràn
+  let titleFontSize = 26;
+  ctx.font = `700 ${titleFontSize}px "Be Vietnam Pro", "Montserrat", "Segoe UI", sans-serif`;
+  while (ctx.measureText(title).width > 720 && titleFontSize > 16) {
+    titleFontSize -= 1;
+    ctx.font = `700 ${titleFontSize}px "Be Vietnam Pro", "Montserrat", "Segoe UI", sans-serif`;
+  }
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 28px "Montserrat", "Segoe UI", sans-serif';
   ctx.fillText(title, 400, 150);
 
   // Chú thích hướng dẫn tương tác
   ctx.fillStyle = '#ecc94b';
-  ctx.font = '500 20px "Montserrat", sans-serif';
+  ctx.font = '500 19px "Be Vietnam Pro", "Montserrat", sans-serif';
   ctx.fillText('Nhấp để xem tư liệu chi tiết', 400, 205);
 
   const texture = new THREE.CanvasTexture(canvas);

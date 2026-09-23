@@ -31,6 +31,15 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize);
 
+// ── ĐẢM BẢO FONTS TIẾNG VIỆT ĐÃ NẠP XONG 100% TRƯỚC KHI VẼ TEXTURE CANVAS ──
+if (document.fonts) {
+  try {
+    await document.fonts.ready;
+  } catch (err) {
+    console.warn('Font loading check:', err);
+  }
+}
+
 // ── DỰNG KIẾN TRÚC BẢO TÀNG & 10 HIỆN VẬT ────────────────────
 const { hallsGroup, sparklesAnimator } = buildMuseumHalls(scene);
 const { exhibitObjects, animators: exhibitAnimators } = createExhibitObjects(scene);
