@@ -9,6 +9,8 @@ build/
 
 # Reference cloned repo
 repo_ref/
+scratch/
+thiết kế 3d.png
 
 # Logs
 npm-debug.log*

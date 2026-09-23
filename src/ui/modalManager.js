@@ -104,7 +104,7 @@ export class ModalManager {
             <div class="theory-topic">Trọng tâm: ${ex.theory.chapterTopic}</div>
             <div class="theory-text">${ex.theory.content.replace(/\n/g, '<br/>')}</div>
             <div class="theory-takeaway">
-              <strong>Điểm cốt lõi MLN131:</strong> ${ex.theory.keyTakeaway}
+              <strong>Luận điểm cốt lõi:</strong> ${ex.theory.keyTakeaway}
             </div>
           </div>
         `;
@@ -115,6 +115,15 @@ export class ModalManager {
           <div class="design-box">
             <h4 style="color:#d4af37; margin-bottom:10px; font-size:15px;">Ý tưởng Thiết kế 3D Hiện vật:</h4>
             <p style="margin-bottom:14px; line-height:1.8; color:#e0e0e0;">${ex.design3D.description}</p>
+            ${ex.design3D.conceptImageUrl ? `
+              <div style="margin:16px 0; border-radius:8px; overflow:hidden; border:1px solid rgba(212,175,55,0.4); box-shadow:0 6px 20px rgba(0,0,0,0.5);">
+                <img src="${ex.design3D.conceptImageUrl}" alt="Bản vẽ Thiết kế 3D" style="width:100%; height:auto; display:block; cursor:pointer;" onclick="window.open('${ex.design3D.conceptImageUrl}', '_blank')" />
+                <div style="padding:8px 12px; background:rgba(16,21,30,0.9); font-size:12px; color:#c89b3c; display:flex; justify-content:space-between; align-items:center;">
+                  <span>Bản vẽ kỹ thuật 3D Concept (Mặt trước, Mặt sau, Mặt trên, Mặt dưới, Wireframe, Shader vật liệu)</span>
+                  <span style="font-size:11px; color:#a0aec0;">Click để phóng to ảnh</span>
+                </div>
+              </div>
+            ` : ''}
             <div class="design-specs">
               <div><strong>Vật liệu PBR:</strong> ${ex.design3D.materials}</div>
               <div><strong>Ánh sáng & Hiệu ứng:</strong> ${ex.design3D.lighting}</div>

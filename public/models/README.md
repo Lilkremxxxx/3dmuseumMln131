@@ -1,6 +1,6 @@
 # HƯỚNG DẪN IMPORT 3D MODELS (ĐỊNH DẠNG .GLB / .GLTF)
 
-Hệ thống Bảo tàng 3D MLN131 đã được tích hợp sẵn bộ tải `GLTFLoader`. Bạn chỉ cần đặt file mô hình 3D định dạng `.glb` vào thư mục này với quy ước đặt tên như sau:
+Hệ thống Bảo tàng Ảo 3D đã được tích hợp sẵn bộ tải `GLTFLoader`. Bạn chỉ cần đặt file mô hình 3D định dạng `.glb` vào thư mục này với quy ước đặt tên như sau:
 
 - `exhibit_1.glb`: Trống đồng Đông Sơn
 - `exhibit_2.glb`: Bục sách Cương lĩnh Dân tộc V.I.Lênin
