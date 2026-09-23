@@ -6,7 +6,7 @@ import { createWaypoints } from './navigation/waypointManager.js';
 import { CameraController } from './navigation/cameraController.js';
 import { ModalManager } from './ui/modalManager.js';
 
-// ── RENDERER & SCENE SETUP (KHÔNG GIAN SÁNG RỰC RỠ) ───────────
+// ── RENDERER & SCENE SETUP (DARK MODE SANG TRỌNG & ÁNH ĐÈN VÀNG) ───────────
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -14,12 +14,12 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.35; // Tăng sáng rực rỡ
+renderer.toneMappingExposure = 1.15; // Cân bằng độ tương phản, ấm cúng và không chói
 
 const scene = new THREE.Scene();
-// Nền sảnh bảo tàng màu sáng ấm cúng
-scene.background = new THREE.Color(0xf2efe9);
-scene.fog = new THREE.Fog(0xf2efe9, 32, 115);
+// Nền sảnh bảo tàng xám than tối sang trọng
+scene.background = new THREE.Color(0x131722);
+scene.fog = new THREE.Fog(0x131722, 28, 115);
 
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 150);
 camera.position.set(0, 1.65, -4);
@@ -67,6 +67,20 @@ const modalManager = new ModalManager(
   () => navigateExhibit(1)
 );
 
+// ── ĐÈN HIGHLIGHT TẬP TRUNG HIỆN VẬT ĐANG CHỌN (WARM GOLDEN SPOTLIGHT) ──
+const activeHighlightSpot = new THREE.SpotLight(0xffdf99, 4.8, 28, Math.PI / 4.2, 0.35, 1.2);
+activeHighlightSpot.position.set(0, 7.2, 4);
+activeHighlightSpot.castShadow = true;
+scene.add(activeHighlightSpot);
+
+const activeSpotTarget = new THREE.Object3D();
+activeSpotTarget.position.set(0, 1.0, 4);
+scene.add(activeSpotTarget);
+activeHighlightSpot.target = activeSpotTarget;
+
+const targetSpotPos = new THREE.Vector3(0, 7.2, 4);
+const targetLookPos = new THREE.Vector3(0, 1.0, 4);
+
 // ── CAMERA CONTROLLER ─────────────────────────────────────────
 const cameraController = new CameraController(
   camera,
@@ -80,6 +94,8 @@ const cameraController = new CameraController(
   (exhibit, index) => {
     currentActiveIndex = index;
     quickSelectEl.value = index;
+    targetSpotPos.set(exhibit.position.x, 7.2, exhibit.position.z);
+    targetLookPos.set(exhibit.position.x, 0.9, exhibit.position.z);
     if (currentExhibitBadgeEl) {
       currentExhibitBadgeEl.textContent = `Hiện vật ${exhibit.romanNumeral}/X: ${exhibit.title}`;
       currentExhibitBadgeEl.style.display = 'block';
@@ -100,6 +116,11 @@ function navigateExhibit(direction) {
 function goToExhibit(index) {
   currentActiveIndex = index;
   quickSelectEl.value = index;
+  const ex = EXHIBITS_DATA[index];
+  if (ex) {
+    targetSpotPos.set(ex.position.x, 7.2, ex.position.z);
+    targetLookPos.set(ex.position.x, 0.9, ex.position.z);
+  }
   cameraController.approachExhibit(index);
 }
 
@@ -218,6 +239,10 @@ function animate() {
   cameraController.update(dt);
   exhibitAnimators.forEach((anim) => anim(elapsed));
   waypointAnimators.forEach((anim) => anim(elapsed));
+
+  // Di chuyển mượt mà chùm sáng spotlight nghệ thuật vào hiện vật đang chọn
+  activeHighlightSpot.position.lerp(targetSpotPos, 0.08);
+  activeSpotTarget.position.lerp(targetLookPos, 0.08);
 
   renderer.render(scene, camera);
 }

@@ -7,11 +7,11 @@ export function createExhibitObjects(scene) {
   const animators = [];
   const gltfLoader = new GLTFLoader();
 
-  // Vật liệu bục trưng bày sáng cẩm thạch
+  // Vật liệu bục trưng bày đá đen cẩm thạch sang trọng
   const pedestalMat = new THREE.MeshStandardMaterial({
-    color: 0xf5f3ee, // Đá cẩm thạch trắng sáng
-    roughness: 0.25,
-    metalness: 0.1,
+    color: 0x1e2430, // Đá granite đen bóng phản quang
+    roughness: 0.22,
+    metalness: 0.22,
   });
 
   const goldTrimMat = new THREE.MeshStandardMaterial({
@@ -49,14 +49,14 @@ export function createExhibitObjects(scene) {
     pedRing.position.y = pedHeight;
     group.add(pedRing);
 
-    // Biển tên hiện vật gắn trước bục (chữ La Mã học thuật, không icon)
+    // Biển tên hiện vật gắn trước bục - nghiêng nhẹ hướng lên tầm mắt người xem
     const badgeMesh = createPedestalBadge(data.title, data.romanNumeral);
-    badgeMesh.position.set(0, 0.5, -1.72);
-    badgeMesh.rotation.y = Math.PI;
+    badgeMesh.position.set(0, 0.58, -1.74);
+    badgeMesh.rotation.set(-0.25, Math.PI, 0);
     group.add(badgeMesh);
 
-    // Spotlight rọi riêng từng hiện vật - độ sáng cao
-    const spot = new THREE.SpotLight(0xfff8ee, 3.2, 10, Math.PI / 4, 0.35);
+    // Spotlight vàng ấm rọi riêng từng hiện vật
+    const spot = new THREE.SpotLight(0xffdfa8, 3.8, 12, Math.PI / 4, 0.35);
     spot.position.set(0, 5.5, 0);
     spot.target = pedBase;
     group.add(spot);
@@ -691,40 +691,41 @@ function buildSecurityShieldExhibit(animators) {
 // ── BẢNG TÊN HIỆN VẬT GẮN TRƯỚC BỤC (TRANG TRỌNG - CHỮ LA MÃ) ─
 function createPedestalBadge(title, romanNumeral) {
   const canvas = document.createElement('canvas');
-  canvas.width = 640;
-  canvas.height = 200;
+  canvas.width = 800;
+  canvas.height = 260;
   const ctx = canvas.getContext('2d');
 
-  // Khung biển nền trắng cẩm thạch sang trọng
-  ctx.fillStyle = '#faf8f5';
-  ctx.fillRect(0, 0, 640, 200);
+  // Khung biển nền đen đá cẩm thạch sang trọng
+  ctx.fillStyle = '#141824';
+  ctx.fillRect(0, 0, 800, 260);
 
   ctx.strokeStyle = '#d4af37';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(10, 10, 620, 180);
+  ctx.lineWidth = 8;
+  ctx.strokeRect(10, 10, 780, 240);
 
   ctx.strokeStyle = '#8a1b24';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(18, 18, 604, 164);
+  ctx.lineWidth = 3;
+  ctx.strokeRect(20, 20, 760, 220);
 
-  // Số La Mã
-  ctx.fillStyle = '#8a1b24';
-  ctx.font = 'bold 36px "Cinzel", "Times New Roman", serif';
+  // Số La Mã vàng ánh kim
+  ctx.fillStyle = '#f1c40f';
+  ctx.font = 'bold 40px "Cinzel", "Times New Roman", serif';
   ctx.textAlign = 'center';
-  ctx.fillText(`HIỆN VẬT ${romanNumeral}`, 320, 65);
+  ctx.fillText(`HIỆN VẬT ${romanNumeral}`, 400, 75);
 
-  // Tên hiện vật
-  ctx.fillStyle = '#1c2833';
-  ctx.font = 'bold 24px "Montserrat", "Segoe UI", sans-serif';
-  ctx.fillText(title, 320, 125);
+  // Tên hiện vật trắng sáng sắc nét
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 30px "Montserrat", "Segoe UI", sans-serif';
+  ctx.fillText(title, 400, 150);
 
-  ctx.fillStyle = '#2980b9';
-  ctx.font = '500 16px "Montserrat", sans-serif';
-  ctx.fillText('Nhấp để quan sát chi tiết', 320, 165);
+  // Chú thích hướng dẫn tương tác
+  ctx.fillStyle = '#ecc94b';
+  ctx.font = '500 20px "Montserrat", sans-serif';
+  ctx.fillText('Nhấp để xem tư liệu chi tiết', 400, 205);
 
   const texture = new THREE.CanvasTexture(canvas);
   return new THREE.Mesh(
-    new THREE.PlaneGeometry(1.2, 0.38),
+    new THREE.PlaneGeometry(1.36, 0.44),
     new THREE.MeshBasicMaterial({ map: texture })
   );
 }

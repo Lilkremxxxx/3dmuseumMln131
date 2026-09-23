@@ -226,9 +226,10 @@ export class CameraController {
     const moveZ = (this.keys['w'] || this.keys['arrowup'] ? 1 : 0) - (this.keys['s'] || this.keys['arrowdown'] ? 1 : 0);
     const moveX = (this.keys['d'] ? 1 : 0) - (this.keys['a'] ? 1 : 0);
 
-    const accel = 18.0;
-    const maxSpeed = 3.6;
-    const friction = Math.exp(-6.0 * dt);
+    const isSprint = this.keys['shift'];
+    const currentMaxSpeed = isSprint ? 9.5 : 6.8;
+    const accel = isSprint ? 40.0 : 28.0;
+    const friction = Math.exp(-6.5 * dt);
 
     if (moveZ !== 0) {
       this.moveVelocity.addScaledVector(fwd, moveZ * accel * dt);
@@ -237,8 +238,8 @@ export class CameraController {
       this.moveVelocity.addScaledVector(right, moveX * accel * dt);
     }
 
-    if (this.moveVelocity.length() > maxSpeed) {
-      this.moveVelocity.normalize().multiplyScalar(maxSpeed);
+    if (this.moveVelocity.length() > currentMaxSpeed) {
+      this.moveVelocity.normalize().multiplyScalar(currentMaxSpeed);
     }
 
     this.camera.position.addScaledVector(this.moveVelocity, dt);

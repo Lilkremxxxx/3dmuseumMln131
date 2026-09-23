@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "meshy": {
+      "command": "node",
+      "args": [
+        "C:/Users/NhatBang/.gemini/meshy-mcp-server/dist/index.js"
+      ],
+      "env": {
+        "MESHY_API_KEY": "${MESHY_API_KEY}"
+      }
+    }
+  }
+}

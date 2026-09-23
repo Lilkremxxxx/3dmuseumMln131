@@ -140,9 +140,8 @@ export class ModalManager {
           <div class="images-grid">
             ${ex.historicalImages.map(img => `
               <div class="image-card">
-                <div class="image-wrapper">
-                  <img src="${img.imageUrl}" alt="${img.title}" loading="lazy" 
-                       onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&auto=format&fit=crop&q=80';" />
+                <div class="image-wrapper" style="cursor:pointer;" onclick="window.open('${img.imageUrl}', '_blank')" title="Nhấp để xem ảnh kích thước gốc">
+                  <img src="${img.imageUrl}" alt="${img.title}" loading="lazy" />
                   <span class="image-tag">${img.tag}</span>
                 </div>
                 <div class="image-title">${img.title}</div>
