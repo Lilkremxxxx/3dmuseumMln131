@@ -1,7 +1,7 @@
 /**
  * DỮ LIỆU CÁC MỐC LỊCH SỬ & LÝ LUẬN ĐIỆN ẢNH (MILESTONES SCROLL)
  * Phong cách Cinematic Scrollytelling tương tự repo Hanh-trinh-theo-chan-Bac
- * Giảm thiểu text - Tập trung hình ảnh tư liệu & từ khóa cốt lõi chuẩn giáo trình
+ * Giảm thiểu text tối đa - Tập trung hình ảnh tư liệu & từ khóa cốt lõi chuẩn giáo trình
  */
 
 export const MILESTONES_DATA = [

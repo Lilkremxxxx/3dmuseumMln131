@@ -57,7 +57,7 @@ export default function WordCascade({
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden px-6">
         
         {eyebrow && (
-          <p className="eyebrow absolute left-1/2 top-[12%] -translate-x-1/2 whitespace-nowrap text-vn-gold tracking-cinematic">
+          <p className="eyebrow absolute left-1/2 top-[12%] -translate-x-1/2 whitespace-nowrap text-vn-gold tracking-cinematic text-xs font-semibold uppercase">
             {eyebrow}
           </p>
         )}

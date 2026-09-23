@@ -25,7 +25,7 @@ export default function TimelineIndicator() {
         setScrollProgress((window.scrollY / totalHeight) * 100);
       }
 
-      // Check active section
+      // Check which section is in view
       const scrollPos = window.scrollY + window.innerHeight * 0.4;
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
         const el = document.getElementById(SECTIONS[i].id);

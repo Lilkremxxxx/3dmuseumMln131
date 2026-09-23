@@ -30,7 +30,7 @@ export default function MilestoneChapter({ milestone: m }) {
     { scope: root }
   );
 
-  // Framed / Contained layout (Side-by-side with antique frame)
+  // Framed layout (Side-by-side with antique frame)
   if (m.contain) {
     return (
       <section id={m.id} ref={root} className="relative h-[220vh]" style={{ background: m.background || '#090A0C' }}>
@@ -93,7 +93,7 @@ export default function MilestoneChapter({ milestone: m }) {
           }}
         />
 
-        {/* Cinematic gradient scrims to ensure high text contrast */}
+        {/* Cinematic gradient scrims */}
         <div
           className="pointer-events-none absolute inset-0 z-[2]"
           style={{
@@ -103,7 +103,7 @@ export default function MilestoneChapter({ milestone: m }) {
         />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[35vh] bg-gradient-to-t from-vn-black/90 to-transparent" />
 
-        {/* Text content anchored on the left */}
+        {/* Text content */}
         <div className="relative z-20 flex h-full items-center">
           <div className="max-w-2xl px-6 sm:px-12 md:px-20">
             <p className="eyebrow mb-3 text-vn-gold tracking-cinematic">{m.eyebrow}</p>
