@@ -1,7 +1,7 @@
 /**
  * Dữ liệu 10 Hiện vật Triển lãm Bảo tàng 3D
  * Chuyên đề: Vấn đề Dân tộc và Tôn giáo trong Thời kỳ Quá độ lên Chủ nghĩa Xã hội
- * Nguồn tư liệu chuẩn: Giáo trình Chủ nghĩa Xã hội Khoa học (Chương 6, trang 195 - 238)
+ * Nguồn tư liệu chuẩn: Giáo trình Chủ nghĩa Xã hội Khoa học (Chương 6)
  */
 
 export const HALLS_INFO = [
@@ -53,7 +53,7 @@ export const EXHIBITS_DATA = [
     lookAt: { x: 0, y: 1.15, z: 4 },
     theme: "Khái niệm Dân tộc & Đặc trưng Dân tộc Việt Nam",
     theory: {
-      chapterTopic: "Khái niệm, đặc trưng cơ bản của dân tộc và đặc điểm dân tộc Việt Nam (Giáo trình, trang 196 - 210)",
+      chapterTopic: "Khái niệm, đặc trưng cơ bản của dân tộc và đặc điểm dân tộc Việt Nam",
       content: `Theo quan điểm của chủ nghĩa Mác - Lênin, dân tộc là quá trình phát triển lâu dài của xã hội loài người, trải qua các hình thức cộng đồng từ thấp đến cao: thị tộc, bộ lạc, bộ tộc, dân tộc. Dân tộc được tiếp cận theo hai nghĩa:
 
 1. Dân tộc theo nghĩa rộng (Quốc gia - Dân tộc / Nation):
@@ -109,7 +109,7 @@ Là cộng đồng người được hình thành trong lịch sử, có mối l
     lookAt: { x: -4.5, y: 1.15, z: 12 },
     theme: "Cương lĩnh Dân tộc của Chủ nghĩa Mác - Lênin",
     theory: {
-      chapterTopic: "Cương lĩnh dân tộc của chủ nghĩa Mác - Lênin (Giáo trình, trang 203 - 207)",
+      chapterTopic: "Cương lĩnh dân tộc của chủ nghĩa Mác - Lênin",
       content: `Dựa trên quan điểm của C.Mác và Ph.Ăngghen về mối quan hệ giữa dân tộc với giai cấp, kết hợp phân tích hai xu hướng khách quan trong sự phát triển quan hệ dân tộc, V.I. Lênin đã khái quát Cương lĩnh dân tộc gồm 3 nội dung cốt tử:
 
 1. 'Các dân tộc hoàn toàn bình đẳng':
@@ -167,7 +167,7 @@ Là cộng đồng người được hình thành trong lịch sử, có mối l
     lookAt: { x: 4.5, y: 1.15, z: 12 },
     theme: "Tư tưởng Hồ Chí Minh về Đại đoàn kết Dân tộc",
     theory: {
-      chapterTopic: "Truyền thống đoàn kết và quan điểm của Đảng, Chủ tịch Hồ Chí Minh (Giáo trình, trang 209 - 211)",
+      chapterTopic: "Truyền thống đoàn kết và quan điểm của Đảng, Chủ tịch Hồ Chí Minh",
       content: `Vận dụng sáng tạo chủ nghĩa Mác - Lênin vào thực tiễn cách mạng Việt Nam, Chủ tịch Hồ Chí Minh và Đảng Cộng sản Việt Nam luôn coi vấn đề dân tộc và đại đoàn kết dân tộc có vị trí chiến lược sống còn.
 
 Bức thư bất hủ gửi Đại hội các dân tộc thiểu số miền Nam tại Pleiku (ngày 19/4/1946), Chủ tịch Hồ Chí Minh viết:
@@ -220,7 +220,7 @@ Quan điểm nhất quán của Đảng ta:
     lookAt: { x: -4.5, y: 1.15, z: 30 },
     theme: "Bản chất Tôn giáo & Tín ngưỡng Truyền thống Dân tộc",
     theory: {
-      chapterTopic: "Bản chất, nguồn gốc tôn giáo và tín ngưỡng truyền thống (Giáo trình, trang 214 - 220, 229 - 231)",
+      chapterTopic: "Bản chất, nguồn gốc tôn giáo và tín ngưỡng truyền thống",
       content: `Theo quan điểm của chủ nghĩa Mác - Lênin:
 • Bản chất của tôn giáo: Tôn giáo là một hình thái ý thức xã hội phản ánh hư ảo hiện thực khách quan vào đầu óc con người. Về phương diện thế giới quan, tôn giáo mang thế giới quan duy tâm.
 • Nguồn gốc của tôn giáo: Bắt nguồn từ nguồn gốc tự nhiên, kinh tế - xã hội (sự bất lực trước các lực lượng tự nhiên và áp bức xã hội), nguồn gốc nhận thức và nguồn gốc tâm lý.
@@ -272,7 +272,7 @@ Mối quan hệ với tín ngưỡng truyền thống ở Việt Nam:
     lookAt: { x: 4.5, y: 1.15, z: 30 },
     theme: "Tôn giáo Đồng hành cùng Lịch sử Dân tộc",
     theory: {
-      chapterTopic: "Đặc điểm tôn giáo ở Việt Nam: Tôn giáo đồng hành cùng dân tộc (Giáo trình, trang 223 - 226, 229 - 232)",
+      chapterTopic: "Đặc điểm tôn giáo ở Việt Nam: Tôn giáo đồng hành cùng dân tộc",
       content: `Giáo trình làm rõ đặc điểm tôn giáo ở Việt Nam:
 1. Việt Nam là quốc gia đa tôn giáo; các tôn giáo chung sống hòa bình, không có xung đột, chiến tranh tôn giáo.
 2. Tín đồ các tôn giáo phần lớn là nhân dân lao động, có lòng yêu nước, tinh thần dân tộc sâu sắc.
@@ -324,7 +324,7 @@ Phật giáo Việt Nam:
     lookAt: { x: -4.5, y: 1.15, z: 44 },
     theme: "Công giáo Đồng hành cùng Dân tộc",
     theory: {
-      chapterTopic: "Chính sách tôn giáo của Đảng và sự hòa nhập tôn giáo (Giáo trình, trang 224 - 227)",
+      chapterTopic: "Chính sách tôn giáo của Đảng và sự hòa nhập tôn giáo",
       content: `Đường hướng hành đạo của đồng bào Công giáo Việt Nam:
 • Thư chung năm 1980 của Hội đồng Giám mục Việt Nam xác định đường hướng mục vụ chiến lược: "Sống Phúc âm giữa lòng dân tộc để phục vụ hạnh phúc của đồng bào".
 • Huấn từ của Giáo hoàng Biển Đức XVI và Giáo hoàng Phanxicô gửi người Công giáo Việt Nam luôn nhấn mạnh: "Người Công giáo tốt cũng là người công dân tốt".
@@ -376,7 +376,7 @@ Biểu tượng văn hóa của Nhà thờ đá Phát Diệm (Ninh Bình):
     lookAt: { x: 4.5, y: 1.15, z: 44 },
     theme: "Sự Phong phú & Hòa hợp Tôn giáo ở Việt Nam",
     theory: {
-      chapterTopic: "Việt Nam là quốc gia đa tôn giáo, chung sống hòa bình (Giáo trình, trang 223 - 225, 228 - 231)",
+      chapterTopic: "Việt Nam là quốc gia đa tôn giáo, chung sống hòa bình",
       content: `Đặc điểm thực tiễn tôn giáo tại Việt Nam:
 • Việt Nam là nơi giao thoa của nhiều luồng văn hóa và tôn giáo lớn trên thế giới, đồng thời là cái nôi sản sinh ra các tôn giáo nội sinh độc đáo.
 • Hiện nay có 43 tổ chức thuộc 16 tôn giáo đã được Nhà nước công nhận tư cách pháp nhân (gồm Phật giáo, Công giáo, Tin Lành, Hồi giáo, Cao Đài, Phật giáo Hòa Hảo...).
@@ -433,7 +433,7 @@ Gắn bó mật thiết với văn hóa bản địa phương Nam, hướng thi�
     lookAt: { x: 0, y: 1.15, z: 65 },
     theme: "Chính sách Dân tộc Toàn diện của Đảng và Nhà nước",
     theory: {
-      chapterTopic: "Nội dung chính sách dân tộc của Đảng và Nhà nước Việt Nam (Giáo trình, trang 211 - 213)",
+      chapterTopic: "Nội dung chính sách dân tộc của Đảng và Nhà nước Việt Nam",
       content: `Chính sách dân tộc của Đảng, Nhà nước Việt Nam mang tính toàn diện, bao trùm tất cả các lĩnh vực:
 
 • Về chính trị: Thực hiện bình đẳng, đoàn kết, tôn trọng, giúp nhau cùng phát triển giữa các dân tộc. Nâng cao tính tích cực chính trị của công dân, chăm lo xây dựng đội ngũ cán bộ người dân tộc thiểu số.
@@ -488,7 +488,7 @@ Bảo tồn Không gian văn hóa Cồng chiêng Tây Nguyên:
     lookAt: { x: -4.5, y: 1.15, z: 92 },
     theme: "Thể chế Pháp quyền XHCN về Dân tộc & Tôn giáo",
     theory: {
-      chapterTopic: "Pháp chế hóa chính sách dân tộc, tôn giáo của Đảng và Nhà nước (Giáo trình, trang 211, 226 - 227)",
+      chapterTopic: "Pháp chế hóa chính sách dân tộc, tôn giáo của Đảng và Nhà nước",
       content: `Nguyên tắc giải quyết vấn đề dân tộc và tôn giáo được pháp chế hóa thành các quy định hiến định và luật định tiến bộ:
 
 Điều 5 Hiến pháp nước Cộng hòa XHCN Việt Nam (2013):
@@ -542,7 +542,7 @@ Bảo tồn Không gian văn hóa Cồng chiêng Tây Nguyên:
     lookAt: { x: 4.5, y: 1.15, z: 92 },
     theme: "Đấu tranh Ngăn chặn Lợi dụng Dân tộc & Tôn giáo",
     theory: {
-      chapterTopic: "Đấu tranh chống các thế lực thù địch lợi dụng vấn đề dân tộc, tôn giáo (Giáo trình, trang 203, 226, 233 - 236)",
+      chapterTopic: "Đấu tranh chống các thế lực thù địch lợi dụng vấn đề dân tộc, tôn giáo",
       content: `Giáo trình chỉ rõ luận điểm cảnh giác cách mạng:
 • Các thế lực thù địch trong chiến lược "diễn biến hòa bình" luôn coi dân tộc và tôn giáo là hai ngọn cờ xung kích để kích động chia rẽ nội bộ, phá hoại khối đại đoàn kết dân tộc, can thiệp vào công việc nội bộ của Việt Nam.
 • Thủ đoạn tinh vi:
