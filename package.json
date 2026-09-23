@@ -1,0 +1,10 @@
+{
+  "name": "virtual-museum-mln131-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd 3d_mln131 && npm install && npm run build",
+    "dev": "cd 3d_mln131 && npm run dev",
+    "preview": "cd 3d_mln131 && npm run preview"
+  }
+}
